@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "package": "com.tfc.assortedutils.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "outer_end.refmap.json",
+  "client": [
+  ],
+  "mixins": [
+    "DebugPacketSenderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
