@@ -2,11 +2,12 @@
   "required": false,
   "package": "com.tfc.assortedutils.mixins",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "outer_end.refmap.json",
+  "refmap": "assorted_utils.refmap.json",
   "client": [
   ],
   "mixins": [
-    "DebugPacketSenderMixin"
+    "DebugPacketSenderMixin",
+    "EnderDragonEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

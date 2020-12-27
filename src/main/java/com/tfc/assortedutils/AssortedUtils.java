@@ -9,6 +9,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
@@ -29,10 +30,13 @@ public class AssortedUtils {
 		});
 		
 		ItemRegistry.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-		RendererRegistry.RENDERERS.register(FMLJavaModLoadingContext.get().getModEventBus());
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(AssortedUtils::createRegistries);
 		
-		MinecraftForge.EVENT_BUS.addListener(Client::onRenderWorldLast);
+		if (FMLEnvironment.dist.isClient()) {
+			RendererRegistry.RENDERERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+			MinecraftForge.EVENT_BUS.addListener(Client::onRenderWorldLast);
+		}
+		
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(AssortedUtils::createRegistries);
 	}
 	
 	public static void createRegistries(RegistryEvent.NewRegistry event) {

@@ -25,10 +25,10 @@ displayName = "Assorted Utils" #mandatory
 # A text field displayed in the mod UI
 #credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
-#authors="Love, Cheese and small house plants" #optional
+authors = "GiantLuigi4" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description = '''
-
+A collection of utils, which aim to be useful to both devs and players.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 #[[dependencies.AssortedUtils]] #optional
