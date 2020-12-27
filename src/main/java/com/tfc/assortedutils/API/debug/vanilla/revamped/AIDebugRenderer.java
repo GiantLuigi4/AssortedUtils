@@ -3,6 +3,7 @@ package com.tfc.assortedutils.API.debug.vanilla.revamped;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.tfc.assortedutils.API.debug.CustomDebugRenderer;
+import com.tfc.assortedutils.AssortedUtils;
 import com.tfc.assortedutils.registry.ItemRegistry;
 import com.tfc.assortedutils.utils.Color;
 import net.minecraft.client.Minecraft;
@@ -98,6 +99,7 @@ public class AIDebugRenderer extends CustomDebugRenderer {
 	
 	@Override
 	public void render(MatrixStack stack, double playerX, double playerY, double playerZ) {
+		AssortedUtils.createBetterFPSGraphSection("assortedutils:drawPathfindingOverlay");
 		RenderSystem.pushMatrix();
 //		RenderSystem.rotatef(Minecraft.getInstance().getRenderManager().info.getPitch(), 1, 0, 0);
 //		RenderSystem.rotatef(Minecraft.getInstance().getRenderManager().info.getYaw() + 180, 0, 1, 0);
@@ -197,5 +199,6 @@ public class AIDebugRenderer extends CustomDebugRenderer {
 			ignored.printStackTrace();
 		}
 		RenderSystem.popMatrix();
+		AssortedUtils.endBetterFPSGraphSection();
 	}
 }

@@ -4,9 +4,11 @@ import com.tfc.assortedutils.custom_registries.debug_renderer.DebugRegistryBuild
 import com.tfc.assortedutils.packets.PathPacket;
 import com.tfc.assortedutils.registry.ItemRegistry;
 import com.tfc.assortedutils.registry.RendererRegistry;
+import com.tfc.better_fps_graph.API.Profiler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -41,5 +43,15 @@ public class AssortedUtils {
 	
 	public static void createRegistries(RegistryEvent.NewRegistry event) {
 		new DebugRegistryBuilder().create();
+	}
+	
+	public static void createBetterFPSGraphSection(String name) {
+		if (ModList.get().isLoaded("better_fps_graph"))
+			Profiler.addSection(name);
+	}
+	
+	public static void endBetterFPSGraphSection() {
+		if (ModList.get().isLoaded("better_fps_graph"))
+			Profiler.endSection();
 	}
 }
