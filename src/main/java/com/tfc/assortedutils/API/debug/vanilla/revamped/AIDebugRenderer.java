@@ -21,6 +21,9 @@ import net.minecraft.util.math.vector.Vector3d;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+/**
+ * If you want and example custom renderer, then check out {@link com.tfc.assortedutils.API.debug.vanilla.HeightmapDebugRenderer}
+ */
 public class AIDebugRenderer extends CustomDebugRenderer {
 	public static void drawLine(Path path, int camX, int camY, int camZ) {
 		Tessellator tessellator = Tessellator.getInstance();

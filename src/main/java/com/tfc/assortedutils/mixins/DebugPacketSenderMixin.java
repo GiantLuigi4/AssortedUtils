@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 public class DebugPacketSenderMixin {
 	/**
 	 * @author TFC The Flying Creeper (aka GiantLuigi4)
+	 * @reason bring in some work around to the original code for this method not existing, and seemingly also for the packet associated with this not existing
 	 */
 	@Overwrite
 	public static void sendPath(World worldIn, MobEntity p_218803_1_, @Nullable Path p_218803_2_, float p_218803_3_) {

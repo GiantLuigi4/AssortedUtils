@@ -1,5 +1,6 @@
-package com.tfc.assortedutils.API.debug;
+package com.tfc.assortedutils.custom_registries.debug_renderer;
 
+import com.tfc.assortedutils.API.debug.ICustomDebugRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.RegistryBuilder;
 

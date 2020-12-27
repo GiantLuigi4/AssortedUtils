@@ -1,18 +1,14 @@
 package com.tfc.assortedutils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.tfc.assortedutils.API.debug.DebugRendererRegistry;
 import com.tfc.assortedutils.API.debug.ICustomDebugRenderer;
+import com.tfc.assortedutils.custom_registries.debug_renderer.DebugRendererRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 public class Client {
 	public static void onRenderWorldLast(RenderWorldLastEvent event) {
-//		if (ItemRegistry.isCorrect(Minecraft.getInstance().player.getHeldItem(Hand.OFF_HAND),ItemRegistry.DEBUG_TOOL_AI)) {
-//
-//		}
-//		if (ItemRegistry.isCorrect(Minecraft.getInstance().player.getHeldItem(Hand.OFF_HAND),ItemRegistry.DEBUG_TOOL_HEIGHTMAP)) {
 		for (ICustomDebugRenderer debugRenderer : DebugRendererRegistry.getAllValues()) {
 			RenderSystem.pushMatrix();
 			RenderSystem.rotatef(Minecraft.getInstance().getRenderManager().info.getPitch(), 1, 0, 0);
@@ -39,6 +35,5 @@ public class Client {
 			event.getMatrixStack().pop();
 			RenderSystem.popMatrix();
 		}
-//		}
 	}
 }
