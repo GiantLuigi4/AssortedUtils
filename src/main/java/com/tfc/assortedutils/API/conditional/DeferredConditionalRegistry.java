@@ -6,7 +6,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.function.Supplier;
 
-public class DefferedConditionalRegistry {
+public class DeferredConditionalRegistry {
 	/**
 	 * registers something assuming the condition is met
 	 *
