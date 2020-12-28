@@ -2,6 +2,7 @@ package com.tfc.assortedutils;
 
 import com.tfc.assortedutils.custom_registries.debug_renderer.DebugRegistryBuilder;
 import com.tfc.assortedutils.packets.PathPacket;
+import com.tfc.assortedutils.packets.StructurePacket;
 import com.tfc.assortedutils.registry.ItemRegistry;
 import com.tfc.assortedutils.registry.RendererRegistry;
 import com.tfc.better_fps_graph.API.Profiler;
@@ -28,6 +29,9 @@ public class AssortedUtils {
 	
 	public AssortedUtils() {
 		NETWORK_INSTANCE.registerMessage(0, PathPacket.class, PathPacket::writePacketData, PathPacket::new, (packet, context) -> {
+			context.get().setPacketHandled(true);
+		});
+		NETWORK_INSTANCE.registerMessage(1, StructurePacket.class, StructurePacket::writePacketData, StructurePacket::new, (packet, context) -> {
 			context.get().setPacketHandled(true);
 		});
 		

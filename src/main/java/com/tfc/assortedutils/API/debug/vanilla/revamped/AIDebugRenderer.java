@@ -9,7 +9,6 @@ import com.tfc.assortedutils.utils.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.debug.PathfindingDebugRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.pathfinding.Path;
@@ -19,9 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
@@ -112,9 +109,9 @@ public class AIDebugRenderer extends CustomDebugRenderer {
 //							Minecraft.getInstance().getRenderManager().info.getProjectedView().z
 //					);
 //			Field map = Minecraft.getInstance().debugRenderer.pathfinding.getClass().getDeclaredField("pathMap");
-			Field map = ObfuscationReflectionHelper.findField(PathfindingDebugRenderer.class, "field_188291_b");
-			map.setAccessible(true);
-			Map<Integer, Path> pathMap = (Map<Integer, Path>) map.get(Minecraft.getInstance().debugRenderer.pathfinding);
+//			Field map = ObfuscationReflectionHelper.findField(PathfindingDebugRenderer.class, "field_188291_b");
+//			map.setAccessible(true);
+			Map<Integer, Path> pathMap = Minecraft.getInstance().debugRenderer.pathfinding.pathMap;
 			RenderSystem.pushMatrix();
 			RenderSystem.enableBlend();
 			RenderSystem.defaultAlphaFunc();
