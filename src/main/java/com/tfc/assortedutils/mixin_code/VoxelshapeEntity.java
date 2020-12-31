@@ -1,6 +1,7 @@
 package com.tfc.assortedutils.mixin_code;
 
 import com.tfc.assortedutils.API.entities.IVoxelShapeEntity;
+import com.tfc.assortedutils.API.entities.VoxelShapeEntityRaytraceResult;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -34,7 +35,7 @@ public class VoxelshapeEntity {
 					AxisAlignedBB axisalignedbb = entity.getBoundingBox().expand(lookVec.scale(reach)).grow(1.0D, 1.0D, 1.0D);
 					
 					if (result1 != null)
-						mc.objectMouseOver = new EntityRayTraceResult(entity, result1.getHitVec());
+						mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(entity, result1.getHitVec(), ((IVoxelShapeEntity) result.getEntity()).getRaytraceShape());
 					else {
 						mc.objectMouseOver = entity.pick(reach, partialTicks, false);
 						
@@ -51,15 +52,21 @@ public class VoxelshapeEntity {
 						
 						mc.objectMouseOver = entity.pick(reach, partialTicks, false);
 						
-						double distEntity = playerPos.squareDistanceTo(entityraytraceresult.getHitVec());
-						double distBlock = playerPos.squareDistanceTo(mc.objectMouseOver.getHitVec());
+						double distEntity = Double.POSITIVE_INFINITY;
+						if (entityraytraceresult != null)
+							distEntity = playerPos.squareDistanceTo(entityraytraceresult.getHitVec());
+						
+						double distBlock = Double.POSITIVE_INFINITY;
+						if (mc.objectMouseOver != null)
+							distBlock = playerPos.squareDistanceTo(mc.objectMouseOver.getHitVec());
+						
 						if (distEntity <= distBlock) {
 							if (entityraytraceresult.getEntity() instanceof IVoxelShapeEntity) {
 								RayTraceResult result2 = ((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape().rayTrace(
 										playerPos.subtract(entity.getPositionVec()), reachVec.subtract(entity.getPositionVec()), new BlockPos(0, 0, 0)
 								);
 								
-								mc.objectMouseOver = new EntityRayTraceResult(entity, result1.getHitVec());
+								mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(entity, result2.getHitVec(), ((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape());
 								mc.pointedEntity = entityraytraceresult.getEntity();
 							} else {
 								Entity entity1 = entityraytraceresult.getEntity();
