@@ -16,7 +16,7 @@ public class GameRendererMixin {
 	@Final
 	private Minecraft mc;
 	
-	@Inject(at = @At("HEAD"), method = "getMouseOver(F)V")
+	@Inject(at = @At("TAIL"), method = "getMouseOver(F)V")
 	public void pickPost(float partialTicks, CallbackInfo ci) {
 		VoxelshapeEntity.pickPost(mc, partialTicks);
 	}
