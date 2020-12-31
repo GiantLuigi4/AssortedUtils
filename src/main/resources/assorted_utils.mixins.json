@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "assorted_utils.refmap.json",
   "client": [
+    "GameRendererMixin"
   ],
   "mixins": [
     "DebugPacketSenderMixin",
