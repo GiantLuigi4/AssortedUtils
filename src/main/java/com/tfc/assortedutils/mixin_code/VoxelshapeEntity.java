@@ -6,17 +6,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemFrameEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class VoxelshapeEntity {
 	public static void pickPost(Minecraft mc, float partialTicks) {
 		Entity entity = mc.getRenderViewEntity();
+		
+		if (entity == null) return;
+		if (mc.playerController == null) return;
 		
 		if (mc.objectMouseOver == null)
 			return;
@@ -35,59 +37,47 @@ public class VoxelshapeEntity {
 		if (mc.playerController.extendedReach())
 			distance = 6.0D;
 		
-		Vector3d playerPos = Minecraft.getInstance().player.getEyePosition(partialTicks);
+		Vector3d playerPos = mc.player.getEyePosition(partialTicks);
 		Vector3d lookVec = entity.getLook(1.0F);
 		Vector3d reachVec = playerPos.add(lookVec.x * reach, lookVec.y * reach, lookVec.z * reach);
 		
 		AxisAlignedBB axisalignedbb = entity.getBoundingBox().expand(lookVec.scale(reach)).grow(1.0D, 1.0D, 1.0D);
 		EntityRayTraceResult result1 = ProjectileHelper.rayTraceEntities(entity, playerPos, reachVec, axisalignedbb, (p_215312_0_) -> {
-			if (p_215312_0_ == Minecraft.getInstance().player) return false;
+			if (p_215312_0_ == mc.player) return false;
 			boolean voxelShapeResult = true;
 			if (p_215312_0_ instanceof IVoxelShapeEntity) {
 				if (((IVoxelShapeEntity) p_215312_0_).getRaytraceShape() != null) {
 					VoxelShape shape = ((IVoxelShapeEntity) p_215312_0_.getEntity()).getRaytraceShape();
-
-//					voxelShapeResult = false;
-//					for (AxisAlignedBB box : shape.toBoundingBoxList()) {
-////						if (box.offset(entity.getPositionVec()).rayTrace(playerPos,reachVec).isPresent()) {
-////							voxelShapeResult = true;
-////							break;
-////						}
-////						if (box.offset(entity.getPositionVec()).rayTrace(reachVec,playerPos).isPresent()) {
-////							voxelShapeResult = true;
-////							break;
-////						}
-//						if (new AxisAlignedBB(playerPos.x,playerPos.y,playerPos.z,reachVec.x,reachVec.y,reachVec.z).intersects(box))
-//							voxelShapeResult = true;
-//					}
-//					if (!voxelShapeResult) {
+					
 					RayTraceResult result2 = shape.withOffset(
 							-(entity.getBoundingBox().maxX - entity.getBoundingBox().minX) / 2f,
 							0,
 							-(entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ) / 2f
-					).withOffset(
-							-(entity.getBoundingBox().maxX - entity.getBoundingBox().minX) / 3f,
-							0,
-							-(entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ) / 3f
 					).withOffset(p_215312_0_.getPosX(), p_215312_0_.getPosY(), p_215312_0_.getPosZ()).rayTrace(
-							playerPos, reachVec, new BlockPos(0, 0, 0)
+							reachVec, playerPos, new BlockPos(0, 0, 0)
 					);
 					voxelShapeResult = result2 != null;
-//					}
 				}
 			}
 			return !p_215312_0_.isSpectator() && p_215312_0_.canBeCollidedWith() && voxelShapeResult;
 		}, Integer.MAX_VALUE);
 		
 		if (result1 != null) {
-			mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(result1.getEntity(), result1.getHitVec(), ((IVoxelShapeEntity) result.getEntity()).getRaytraceShape());
+			BlockRayTraceResult result2 = ((IVoxelShapeEntity) result1.getEntity()).getRaytraceShape().rayTrace(
+					playerPos.subtract(entity.getPositionVec()), reachVec.subtract(entity.getPositionVec()), new BlockPos(0, 0, 0)
+			);
+			mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(
+					entity, result1.getHitVec(),
+					((IVoxelShapeEntity) result1.getEntity()).getRaytraceShape(),
+					result2.getFace()
+			);
 			mc.pointedEntity = result1.getEntity();
 			return;
 		} else {
 			mc.objectMouseOver = entity.pick(reach, partialTicks, false);
 			
 			EntityRayTraceResult entityraytraceresult = ProjectileHelper.rayTraceEntities(entity, playerPos, reachVec, axisalignedbb, (p_215312_0_) -> {
-				if (p_215312_0_ == Minecraft.getInstance().player) return false;
+				if (p_215312_0_ == mc.player) return false;
 				boolean voxelShapeResult = true;
 				if (p_215312_0_ instanceof IVoxelShapeEntity) {
 					if (((IVoxelShapeEntity) p_215312_0_).getRaytraceShape() != null) {
@@ -96,12 +86,8 @@ public class VoxelshapeEntity {
 								-(entity.getBoundingBox().maxX - entity.getBoundingBox().minX) / 2f,
 								0,
 								-(entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ) / 2f
-						).withOffset(
-								-(entity.getBoundingBox().maxX - entity.getBoundingBox().minX) / 3f,
-								0,
-								-(entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ) / 3f
 						).withOffset(p_215312_0_.getPosX(), p_215312_0_.getPosY(), p_215312_0_.getPosZ()).rayTrace(
-								playerPos, reachVec, new BlockPos(0, 0, 0)
+								reachVec, playerPos, new BlockPos(0, 0, 0)
 						);
 						voxelShapeResult = result2 != null;
 					}
@@ -121,7 +107,7 @@ public class VoxelshapeEntity {
 			
 			if (distEntity < distBlock && entityraytraceresult != null) {
 				if (entityraytraceresult.getEntity() instanceof IVoxelShapeEntity) {
-					RayTraceResult result2 = ((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape().rayTrace(
+					BlockRayTraceResult result2 = ((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape().rayTrace(
 							playerPos.subtract(entity.getPositionVec()), reachVec.subtract(entity.getPositionVec()), new BlockPos(0, 0, 0)
 					);
 					
@@ -133,7 +119,11 @@ public class VoxelshapeEntity {
 						return;
 					}
 					
-					mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(entity, result2.getHitVec(), ((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape());
+					mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(
+							entity, result2.getHitVec(),
+							((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape(),
+							result2.getFace()
+					);
 					mc.pointedEntity = entityraytraceresult.getEntity();
 				} else {
 					Entity entity1 = entityraytraceresult.getEntity();
@@ -145,5 +135,12 @@ public class VoxelshapeEntity {
 			}
 		}
 		mc.pointedEntity = null;
+	}
+	
+	public static ActionResultType onInteract(PlayerEntity playerEntity, VoxelShapeEntityRaytraceResult raytraceResult) {
+		Entity entity = raytraceResult.getEntity();
+		if (entity instanceof IVoxelShapeEntity)
+			return ((IVoxelShapeEntity) entity).onInteract(playerEntity, raytraceResult);
+		return ActionResultType.PASS;
 	}
 }

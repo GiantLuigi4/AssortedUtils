@@ -7,8 +7,12 @@
     "GameRendererMixin"
   ],
   "mixins": [
+    "CUseEntityPacketMixin",
     "DebugPacketSenderMixin",
-    "EnderDragonEntityMixin"
+    "EnderDragonEntityMixin",
+    "EntityMixin",
+    "PlayerEntityMixin",
+    "ServerNetPlayHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
