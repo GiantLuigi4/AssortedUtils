@@ -65,17 +65,17 @@ public class RenderHelper {
 		drawBox(stack, new AxisAlignedBB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ), r, g, b, a);
 	}
 	
-	public static void drawBoxOutline(MatrixStack stack, MutableBoundingBox box, float r, float g, float b, float a) {
+	public static void drawBoxOutline(MatrixStack stack, AxisAlignedBB box, float r, float g, float b, float a) {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 		RenderSystem.lineWidth(2);
-		int x1 = box.minX;
-		int y1 = box.minY;
-		int z1 = box.minZ;
-		int x2 = box.maxX;
-		int y2 = box.maxY;
-		int z2 = box.maxZ;
+		float x1 = (float) box.minX;
+		float y1 = (float) box.minY;
+		float z1 = (float) box.minZ;
+		float x2 = (float) box.maxX;
+		float y2 = (float) box.maxY;
+		float z2 = (float) box.maxZ;
 		Matrix4f matrix4f = blankStack.getLast().getMatrix();
 		if (stack != null)
 			matrix4f = stack.getLast().getMatrix();
@@ -104,6 +104,10 @@ public class RenderHelper {
 		bufferbuilder.pos(matrix4f, x1, y2, z2).color(r, g, b, a).endVertex();
 		bufferbuilder.pos(matrix4f, x1, y2, z1).color(r, g, b, a).endVertex();
 		tessellator.draw();
+	}
+	
+	public static void drawBoxOutline(MatrixStack stack, MutableBoundingBox box, float r, float g, float b, float a) {
+		drawBox(stack, new AxisAlignedBB(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ), r, g, b, a);
 	}
 	
 	public static void drawLine(MatrixStack stack,
