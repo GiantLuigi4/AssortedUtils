@@ -63,11 +63,24 @@ public class VoxelshapeEntity {
 		}, Integer.MAX_VALUE);
 		
 		if (result1 != null) {
-			BlockRayTraceResult result2 = ((IVoxelShapeEntity) result1.getEntity()).getRaytraceShape().rayTrace(
+			BlockRayTraceResult result2 = ((IVoxelShapeEntity) result1.getEntity()).getRaytraceShape().withOffset(
+					-(entity.getBoundingBox().maxX - entity.getBoundingBox().minX) / 2f,
+					0,
+					-(entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ) / 2f
+			).withOffset(result1.getEntity().getPosX(), result1.getEntity().getPosY(), result1.getEntity().getPosZ()).rayTrace(
 					playerPos.subtract(entity.getPositionVec()), reachVec.subtract(entity.getPositionVec()), new BlockPos(0, 0, 0)
 			);
+			
+			if (result2 == null) {
+				Entity entity1 = result1.getEntity();
+				mc.objectMouseOver = result1;
+				if (entity1 instanceof LivingEntity || entity1 instanceof ItemFrameEntity)
+					mc.pointedEntity = entity1;
+				return;
+			}
+			
 			mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(
-					entity, result1.getHitVec(),
+					entity, result2.getHitVec(),
 					((IVoxelShapeEntity) result1.getEntity()).getRaytraceShape(),
 					result2.getFace()
 			);
@@ -107,7 +120,11 @@ public class VoxelshapeEntity {
 			
 			if (distEntity < distBlock && entityraytraceresult != null) {
 				if (entityraytraceresult.getEntity() instanceof IVoxelShapeEntity) {
-					BlockRayTraceResult result2 = ((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape().rayTrace(
+					BlockRayTraceResult result2 = ((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape().withOffset(
+							-(entity.getBoundingBox().maxX - entity.getBoundingBox().minX) / 2f,
+							0,
+							-(entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ) / 2f
+					).withOffset(entityraytraceresult.getEntity().getPosX(), entityraytraceresult.getEntity().getPosY(), entityraytraceresult.getEntity().getPosZ()).rayTrace(
 							playerPos.subtract(entity.getPositionVec()), reachVec.subtract(entity.getPositionVec()), new BlockPos(0, 0, 0)
 					);
 					
