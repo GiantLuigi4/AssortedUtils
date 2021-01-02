@@ -12,8 +12,8 @@ public class MixinFieldAccessor {
 	
 	static {
 		try {
-			CUseEntityPacketMixin$assortedUtils_entityInteractDirection = CUseEntityPacket.class.getField("dir");
-			PlayerEntityMixin$assortedUtils_entityInteractDirection = PlayerEntity.class.getField("dir");
+			CUseEntityPacketMixin$assortedUtils_entityInteractDirection = CUseEntityPacket.class.getField("assortedUtils_entityInteractDirection");
+			PlayerEntityMixin$assortedUtils_entityInteractDirection = PlayerEntity.class.getField("assortedUtils_entityInteractDirection");
 		} catch (Throwable err) {
 			throw new RuntimeException(err);
 		}
