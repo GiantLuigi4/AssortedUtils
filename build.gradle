@@ -108,7 +108,7 @@ dependencies {
     compile 'org.spongepowered:mixin:0.8'
 
 //    compile fg.deobf("curse.maven:BetterFPSGraph-399699:3094889")
-    compileOnly fg.deobf('com.github.GiantLuigi4:Better_FPS_Graph:625571fcf8')
+    compileOnly fg.deobf('com.github.GiantLuigi4:Better_FPS_Graph:f31e026a76')
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"

@@ -1,6 +1,6 @@
 package com.tfc.assortedutils.mixins;
 
-import com.tfc.assortedutils.mixin_code.MixinFieldAccessor;
+import com.tfc.assortedutils.API.entities.VoxelShapeEntityRaytraceResult;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CUseEntityPacket;
@@ -22,6 +22,8 @@ public class CUseEntityPacketMixin {
 	@Inject(at = @At("TAIL"), method = "writePacketData")
 	public void write(PacketBuffer buf, CallbackInfo ci) {
 		if (FMLEnvironment.dist.isClient())
-			buf.writeInt(MixinFieldAccessor.getUseEntityDirAsInt(Minecraft.getInstance().player));
+			if (Minecraft.getInstance().objectMouseOver instanceof VoxelShapeEntityRaytraceResult)
+				buf.writeInt(((VoxelShapeEntityRaytraceResult) Minecraft.getInstance().objectMouseOver).getDir().ordinal());
+			else buf.writeInt(-1);
 	}
 }
