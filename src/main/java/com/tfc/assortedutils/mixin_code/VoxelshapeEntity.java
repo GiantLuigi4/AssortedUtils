@@ -68,7 +68,7 @@ public class VoxelshapeEntity {
 					0,
 					-(entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ) / 2f
 			).withOffset(result1.getEntity().getPosX(), result1.getEntity().getPosY(), result1.getEntity().getPosZ()).rayTrace(
-					playerPos.subtract(entity.getPositionVec()), reachVec.subtract(entity.getPositionVec()), new BlockPos(0, 0, 0)
+					playerPos, reachVec, new BlockPos(0, 0, 0)
 			);
 			
 			if (result2 == null) {
@@ -125,7 +125,7 @@ public class VoxelshapeEntity {
 							0,
 							-(entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ) / 2f
 					).withOffset(entityraytraceresult.getEntity().getPosX(), entityraytraceresult.getEntity().getPosY(), entityraytraceresult.getEntity().getPosZ()).rayTrace(
-							playerPos.subtract(entity.getPositionVec()), reachVec.subtract(entity.getPositionVec()), new BlockPos(0, 0, 0)
+							playerPos, reachVec, new BlockPos(0, 0, 0)
 					);
 					
 					if (result2 == null) {
