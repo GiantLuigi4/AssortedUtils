@@ -71,8 +71,8 @@ public class VoxelshapeEntity {
 					playerPos, reachVec, new BlockPos(0, 0, 0)
 			);
 			
+			Entity entity1 = result1.getEntity();
 			if (result2 == null) {
-				Entity entity1 = result1.getEntity();
 				mc.objectMouseOver = result1;
 				if (entity1 instanceof LivingEntity || entity1 instanceof ItemFrameEntity)
 					mc.pointedEntity = entity1;
@@ -80,8 +80,8 @@ public class VoxelshapeEntity {
 			}
 			
 			mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(
-					entity, result2.getHitVec(),
-					((IVoxelShapeEntity) result1.getEntity()).getRaytraceShape(),
+					entity1, result2.getHitVec(),
+					((IVoxelShapeEntity) entity1).getRaytraceShape(),
 					result2.getFace()
 			);
 			mc.pointedEntity = result1.getEntity();
@@ -128,8 +128,8 @@ public class VoxelshapeEntity {
 							playerPos, reachVec, new BlockPos(0, 0, 0)
 					);
 					
+					Entity entity1 = entityraytraceresult.getEntity();
 					if (result2 == null) {
-						Entity entity1 = entityraytraceresult.getEntity();
 						mc.objectMouseOver = entityraytraceresult;
 						if (entity1 instanceof LivingEntity || entity1 instanceof ItemFrameEntity)
 							mc.pointedEntity = entity1;
@@ -137,7 +137,7 @@ public class VoxelshapeEntity {
 					}
 					
 					mc.objectMouseOver = new VoxelShapeEntityRaytraceResult(
-							entity, result2.getHitVec(),
+							entity1, result2.getHitVec(),
 							((IVoxelShapeEntity) entityraytraceresult.getEntity()).getRaytraceShape(),
 							result2.getFace()
 					);
