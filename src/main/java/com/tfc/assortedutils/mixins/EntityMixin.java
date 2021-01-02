@@ -23,11 +23,13 @@ public class EntityMixin {
 		Direction dir = MixinFieldAccessor.getUseEntityDir(player);
 		if (dir != null) {
 			Entity entity = (Entity) (Object) this;
-			if (VoxelshapeEntity.onInteract(
+			ActionResultType resultType = VoxelshapeEntity.onInteract(
 					player, new VoxelShapeEntityRaytraceResult(
 							entity, vec, MixinFieldAccessor.getUseEntityDir(player)
 					)
-			) != ActionResultType.PASS) {
+			);
+			if (resultType != ActionResultType.PASS) {
+				cir.setReturnValue(resultType);
 				cir.cancel();
 			}
 		}

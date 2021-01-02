@@ -22,6 +22,6 @@ public class CUseEntityPacketMixin {
 	@Inject(at = @At("TAIL"), method = "writePacketData")
 	public void write(PacketBuffer buf, CallbackInfo ci) {
 		if (FMLEnvironment.dist.isClient())
-			buf.writeInt(MixinFieldAccessor.getUseEntityDir(Minecraft.getInstance().player).ordinal());
+			buf.writeInt(MixinFieldAccessor.getUseEntityDirAsInt(Minecraft.getInstance().player));
 	}
 }
