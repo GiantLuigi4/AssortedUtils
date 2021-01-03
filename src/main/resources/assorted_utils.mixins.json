@@ -12,7 +12,8 @@
     "EnderDragonEntityMixin",
     "EntityMixin",
     "PlayerEntityMixin",
-    "ServerNetPlayHandlerMixin"
+    "ServerNetPlayHandlerMixin",
+    "VoxelShapeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
