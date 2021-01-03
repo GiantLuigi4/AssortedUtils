@@ -11,15 +11,25 @@ import net.minecraftforge.common.util.Constants;
 import java.util.Map;
 
 public class ExtendedCompoundNBT extends CompoundNBT {
+	private final CompoundNBT src;
+	
 	public ExtendedCompoundNBT(Map<String, INBT> tagMap) {
 		super(tagMap);
+		this.src = null;
 	}
 	
 	public ExtendedCompoundNBT() {
+		this.src = null;
 	}
 	
-	public ExtendedCompoundNBT(CompoundNBT src) {
-		this.merge(src);
+	public ExtendedCompoundNBT(CompoundNBT src, boolean wrap) {
+		if (!wrap) {
+			this.merge(src);
+			this.src = null;
+		} else {
+			this.src = src;
+			this.tagMap = src.tagMap;
+		}
 	}
 	
 	private static INBT toINBT(JsonElement element) {
@@ -59,7 +69,7 @@ public class ExtendedCompoundNBT extends CompoundNBT {
 			if (val == 42) return JsonNull.INSTANCE;
 			else return new JsonPrimitive(((ByteNBT) inbt).getByte() != 0);
 		} else {
-			ExtendedCompoundNBT nbt = new ExtendedCompoundNBT((CompoundNBT) inbt);
+			ExtendedCompoundNBT nbt = new ExtendedCompoundNBT((CompoundNBT) inbt, true);
 			if (nbt.contains("isList") && nbt.get("isList").getType().equals(NBTTypes.getGetTypeByID(Constants.NBT.TAG_LONG))) {
 				JsonArray array = new JsonArray();
 				for (String key1 : nbt.keySet()) {

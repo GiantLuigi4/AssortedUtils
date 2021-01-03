@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.tfc.assortedutils.API.nbt.ExtendedCompoundNBT;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
@@ -29,6 +30,15 @@ public class CompoundNBTTest {
 		compoundNBT.putQuaternion("quaternion", new Quaternion(128, 0, 45, true));
 		
 		CompressedStreamTools.write(compoundNBT, new File("src/test/resources/extended_tag_compound_tests/position_and_rotations.nbt"));
+		
+		CompoundNBT source = new CompoundNBT();
+		source.putString("hello", "world");
+		compoundNBT = new ExtendedCompoundNBT(source, true);
+		compoundNBT.putInt("int", 1);
+		source.putLong("long", 10239);
+		compoundNBT.putFloat("float", Float.MAX_VALUE);
+		
+		CompressedStreamTools.write(source, new File("src/test/resources/extended_tag_compound_tests/nbt_wrapper_test.nbt"));
 	}
 	
 	public static String readFromCL(String resource) throws IOException {
