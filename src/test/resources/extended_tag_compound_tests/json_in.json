@@ -1,0 +1,21 @@
+{
+  "hello": "world",
+  "int": 0,
+  "double": 0.0,
+  "boolean_true": true,
+  "boolean_false": false,
+  "list": [
+    "string",
+    0.0,
+    {
+      "compound": "hi",
+      "bool1": false
+    }
+  ],
+  "compound": {
+    "yes": "no",
+    "compound": {
+      "no": "yes"
+    }
+  }
+}
