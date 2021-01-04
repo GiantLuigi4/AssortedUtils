@@ -26,6 +26,7 @@ public class RotatedVoxelShape extends VoxelShape {
 	public RotatedVoxelShape(VoxelShape shape, Quaternion quaternion) {
 		super(((VoxelShapeAccessor) shape).getPart());
 		this.shape = shape;
+		this.rotation = quaternion;
 	}
 	
 	@Override
