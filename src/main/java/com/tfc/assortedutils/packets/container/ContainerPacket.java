@@ -1,4 +1,4 @@
-package com.tfc.assortedutils.packets;
+package com.tfc.assortedutils.packets.container;
 
 import com.tfc.assortedutils.API.gui.container.SimpleContainer;
 import com.tfc.assortedutils.API.gui.screen.SimpleContainerScreen;

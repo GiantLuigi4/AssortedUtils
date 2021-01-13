@@ -1,4 +1,4 @@
-package com.tfc.assortedutils.packets;
+package com.tfc.assortedutils.packets.container;
 
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.IPacket;

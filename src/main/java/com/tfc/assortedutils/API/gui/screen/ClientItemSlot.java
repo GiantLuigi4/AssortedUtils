@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.tfc.assortedutils.API.gui.container.ItemSlot;
 import com.tfc.assortedutils.AssortedUtils;
-import com.tfc.assortedutils.packets.MoveItemPacket;
+import com.tfc.assortedutils.packets.container.MoveItemPacket;
 import com.tfc.assortedutils.utils.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

@@ -1,8 +1,8 @@
 package com.tfc.assortedutils.API.gui.container;
 
 import com.tfc.assortedutils.AssortedUtils;
-import com.tfc.assortedutils.packets.ContainerPacket;
-import com.tfc.assortedutils.packets.UpdateContainerPacket;
+import com.tfc.assortedutils.packets.container.ContainerPacket;
+import com.tfc.assortedutils.packets.container.UpdateContainerPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
@@ -34,6 +34,7 @@ public class SimpleContainer extends Container {
 	}
 	
 	public void open(PlayerEntity playerEntity) {
+		players.add(playerEntity);
 		playerEntity.openContainer = this;
 		AssortedUtils.NETWORK_INSTANCE.send(
 				PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) playerEntity),

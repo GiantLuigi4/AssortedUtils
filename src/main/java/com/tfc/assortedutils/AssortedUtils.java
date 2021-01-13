@@ -3,10 +3,11 @@ package com.tfc.assortedutils;
 import com.tfc.assortedutils.API.gui.container.ItemSlot;
 import com.tfc.assortedutils.API.gui.container.SimpleContainer;
 import com.tfc.assortedutils.custom_registries.debug_renderer.DebugRegistryBuilder;
-import com.tfc.assortedutils.packets.ContainerPacket;
-import com.tfc.assortedutils.packets.MoveItemPacket;
 import com.tfc.assortedutils.packets.PathPacket;
 import com.tfc.assortedutils.packets.StructurePacket;
+import com.tfc.assortedutils.packets.container.ContainerPacket;
+import com.tfc.assortedutils.packets.container.MoveItemPacket;
+import com.tfc.assortedutils.packets.container.SimpleContainerActionPacket;
 import com.tfc.assortedutils.registry.ItemRegistry;
 import com.tfc.assortedutils.registry.RendererRegistry;
 import com.tfc.better_fps_graph.API.Profiler;
@@ -58,6 +59,12 @@ public class AssortedUtils {
 				}
 				context.get().setPacketHandled(true);
 			}
+		});
+		NETWORK_INSTANCE.registerMessage(4, SimpleContainerActionPacket.class, SimpleContainerActionPacket::writePacketData, SimpleContainerActionPacket::new, (packet, context) -> {
+			if (packet.action == 0) {
+				context.get().getSender().closeContainer();
+			}
+			context.get().setPacketHandled(true);
 		});
 		
 		ItemRegistry.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());

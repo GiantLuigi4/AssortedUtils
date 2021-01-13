@@ -169,4 +169,9 @@ public class SimpleScreen extends Screen {
 		focusAlternator = !focusAlternator;
 		return super.changeFocus(false);
 	}
+	
+	@Override
+	public void closeScreen() {
+		super.closeScreen();
+	}
 }
