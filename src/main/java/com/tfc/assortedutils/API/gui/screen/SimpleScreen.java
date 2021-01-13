@@ -44,6 +44,8 @@ public class SimpleScreen extends Screen {
 	}
 	
 	public void deseralize(CompoundNBT nbt) {
+		slots.clear();
+		
 		if (nbt.contains("inventory")) {
 			ListNBT inv = nbt.getList("inventory", Constants.NBT.TAG_COMPOUND);
 			int index = 0;
