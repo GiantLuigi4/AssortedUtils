@@ -23,7 +23,6 @@ public class DebugPacketSenderMixin {
 		DebugPacketSenderCode.sendPath(worldIn, p_218803_1_, p_218803_2_, p_218803_3_);
 	}
 	
-	
 	/**
 	 * @author TFC The Flying Creeper (aka GiantLuigi4)
 	 * @reason bring in some work around to the original code for this method not existing, and seemingly also for the packet associated with this not existing

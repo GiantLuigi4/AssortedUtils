@@ -2,8 +2,8 @@ package com.tfc.assortedutils.mixins;
 
 import com.tfc.assortedutils.API.entities.VoxelShapeEntityRaytraceResult;
 import com.tfc.assortedutils.mixin_code.MixinFieldAccessor;
+import com.tfc.assortedutils.mixin_code.MixinHelper;
 import com.tfc.assortedutils.mixin_code.VoxelshapeEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResultType;
@@ -34,7 +34,7 @@ public class EntityMixin {
 			}
 		}
 		if (FMLEnvironment.dist.isClient()) {
-			MixinFieldAccessor.setUseEntityDir(Minecraft.getInstance().player, null);
+			MixinFieldAccessor.setUseEntityDir(MixinHelper.getMinecraftInstancePlayer(), null);
 		}
 	}
 }
