@@ -80,7 +80,7 @@ public class AssortedUtils {
 	
 	public static void createRegistries(RegistryEvent.NewRegistry event) {
 		new DebugRegistryBuilder().create();
-		new SimpleContainerScreenRegistryBuilder().create();
+		if (FMLEnvironment.dist.isClient()) new SimpleContainerScreenRegistryBuilder().create();
 	}
 	
 	public static void createBetterFPSGraphSection(String name) {

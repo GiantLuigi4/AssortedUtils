@@ -5,6 +5,8 @@ import com.tfc.assortedutils.API.gui.screen.SimpleContainerScreen;
 import com.tfc.assortedutils.API.gui.screen.SimpleContainerScreenFactory;
 import com.tfc.assortedutils.custom_registries.simple_container_screens.SimpleContainerScreenRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.INetHandler;
@@ -48,7 +50,19 @@ public class ContainerPacket implements IPacket {
 				//TODO: make the server send the text component
 			else screen = factory.create(StringTextComponent.EMPTY, Minecraft.getInstance(), type);
 			screen.deseralize(containerNBT);
-			Minecraft.getInstance().currentScreen = screen;
+			
+			//See also: Minecraft.getInstance()$displayGuiScreen()
+			Screen old = Minecraft.getInstance().currentScreen;
+			net.minecraftforge.client.event.GuiOpenEvent event = new net.minecraftforge.client.event.GuiOpenEvent(screen);
+			if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event)) return;
+			Screen guiScreenIn = event.getGui();
+			if (old != null && guiScreenIn != old)
+				old.onClose();
+			guiScreenIn.init(Minecraft.getInstance(), Minecraft.getInstance().getMainWindow().getScaledWidth(), Minecraft.getInstance().getMainWindow().getScaledHeight());
+			Minecraft.getInstance().mouseHelper.ungrabMouse();
+			KeyBinding.unPressAllKeys();
+			
+			Minecraft.getInstance().currentScreen = guiScreenIn;
 		}
 	}
 	
