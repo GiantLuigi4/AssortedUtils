@@ -10,7 +10,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
-public abstract class SimpleContainerScreenFactory<T extends SimpleContainer> implements IForgeRegistryEntry<SimpleContainerScreenFactory<T>> {
+public abstract class SimpleContainerScreenFactory<T extends SimpleContainer> implements IForgeRegistryEntry<SimpleContainerScreenFactory<?>> {
 	private ResourceLocation regName;
 	
 	public static <T extends SimpleContainer> SimpleContainerScreenFactory<T> build(BiFunction<Minecraft, ContainerType<T>, SimpleContainerScreen<T>> factory) {
@@ -65,7 +65,7 @@ public abstract class SimpleContainerScreenFactory<T extends SimpleContainer> im
 	 * @return Root registry type.
 	 */
 	@Override
-	public Class<SimpleContainerScreenFactory<T>> getRegistryType() {
-		return (Class<SimpleContainerScreenFactory<T>>) this.getClass();
+	public Class<SimpleContainerScreenFactory<?>> getRegistryType() {
+		return (Class<SimpleContainerScreenFactory<?>>) this.getClass();
 	}
 }
