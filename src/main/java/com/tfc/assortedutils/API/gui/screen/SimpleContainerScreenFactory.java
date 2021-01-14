@@ -1,6 +1,5 @@
 package com.tfc.assortedutils.API.gui.screen;
 
-import com.tfc.assortedutils.API.gui.container.SimpleContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.ResourceLocation;
@@ -10,19 +9,19 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import javax.annotation.Nullable;
 import java.util.function.BiFunction;
 
-public abstract class SimpleContainerScreenFactory<T extends SimpleContainer> implements IForgeRegistryEntry<SimpleContainerScreenFactory<?>> {
+public abstract class SimpleContainerScreenFactory implements IForgeRegistryEntry<SimpleContainerScreenFactory> {
 	private ResourceLocation regName;
 	
-	public static <T extends SimpleContainer> SimpleContainerScreenFactory<T> build(BiFunction<Minecraft, ContainerType<T>, SimpleContainerScreen<T>> factory) {
-		return new SimpleContainerScreenFactory<T>() {
+	public static SimpleContainerScreenFactory build(BiFunction<Minecraft, ContainerType<?>, SimpleContainerScreen<?>> factory) {
+		return new SimpleContainerScreenFactory() {
 			@Override
-			public SimpleContainerScreen<T> create(ITextComponent titleIn, Minecraft minecraft, ContainerType<T> type) {
+			public SimpleContainerScreen<?> create(ITextComponent titleIn, Minecraft minecraft, ContainerType<?> type) {
 				return factory.apply(minecraft, type);
 			}
 		};
 	}
 	
-	public abstract SimpleContainerScreen<T> create(ITextComponent titleIn, Minecraft minecraft, ContainerType<T> type);
+	public abstract SimpleContainerScreen<?> create(ITextComponent titleIn, Minecraft minecraft, ContainerType<?> type);
 	
 	/**
 	 * A unique identifier for this entry, if this entry is registered already it will return it's official registry name.
@@ -53,7 +52,7 @@ public abstract class SimpleContainerScreenFactory<T extends SimpleContainer> im
 	 * @return This instance
 	 */
 	@Override
-	public SimpleContainerScreenFactory<T> setRegistryName(ResourceLocation name) {
+	public SimpleContainerScreenFactory setRegistryName(ResourceLocation name) {
 		regName = name;
 		return this;
 	}
@@ -65,7 +64,7 @@ public abstract class SimpleContainerScreenFactory<T extends SimpleContainer> im
 	 * @return Root registry type.
 	 */
 	@Override
-	public Class<SimpleContainerScreenFactory<?>> getRegistryType() {
-		return (Class<SimpleContainerScreenFactory<?>>) this.getClass();
+	public Class<SimpleContainerScreenFactory> getRegistryType() {
+		return SimpleContainerScreenFactory.class;
 	}
 }

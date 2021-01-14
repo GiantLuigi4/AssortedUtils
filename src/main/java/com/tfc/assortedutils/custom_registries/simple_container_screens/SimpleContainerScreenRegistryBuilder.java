@@ -4,7 +4,7 @@ import com.tfc.assortedutils.API.gui.screen.SimpleContainerScreenFactory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.RegistryBuilder;
 
-public class SimpleContainerScreenRegistryBuilder extends RegistryBuilder<SimpleContainerScreenFactory<?>> {
+public class SimpleContainerScreenRegistryBuilder extends RegistryBuilder<SimpleContainerScreenFactory> {
 	public SimpleContainerScreenRegistryBuilder() {
 		onAdd((owner, stage, id, obj, oldObj) -> SimpleContainerScreenRegistry.register(obj.getRegistryName(), obj));
 		onClear((owner, stage) -> SimpleContainerScreenRegistry.clear());
@@ -14,7 +14,7 @@ public class SimpleContainerScreenRegistryBuilder extends RegistryBuilder<Simple
 		}));
 		onValidate((owner, stage, id, key, obj) -> {
 		});
-		setType((Class<SimpleContainerScreenFactory<?>>) SimpleContainerScreenFactory.build(null).getClass());
+		setType(SimpleContainerScreenFactory.class);
 		allowModification();
 		tagFolder("container_screens");
 		setDefaultKey(new ResourceLocation("unknown:null"));

@@ -10,9 +10,9 @@ import java.util.ArrayList;
  * {@link com.tfc.assortedutils.registry.RendererRegistry} for a reference as to how to register your renderers
  */
 public class SimpleContainerScreenRegistry {
-	private static final ArrayList<SimpleContainerScreenFactory<?>> factories = new ArrayList<>();
+	private static final ArrayList<SimpleContainerScreenFactory> factories = new ArrayList<>();
 	
-	protected static void register(ResourceLocation name, SimpleContainerScreenFactory<?> factory) {
+	protected static void register(ResourceLocation name, SimpleContainerScreenFactory factory) {
 		if (factory.getRegistryName() == null) factories.add(factory.setRegistryName(name));
 		else factories.add(factory);
 	}
@@ -21,12 +21,12 @@ public class SimpleContainerScreenRegistry {
 		factories.clear();
 	}
 	
-	public static Iterable<SimpleContainerScreenFactory<?>> getAllValues() {
-		return (Iterable<SimpleContainerScreenFactory<?>>) factories.clone();
+	public static Iterable<SimpleContainerScreenFactory> getAllValues() {
+		return (Iterable<SimpleContainerScreenFactory>) factories.clone();
 	}
 	
-	public static SimpleContainerScreenFactory<?> get(ResourceLocation registryName) {
-		for (SimpleContainerScreenFactory<?> factory : factories) {
+	public static SimpleContainerScreenFactory get(ResourceLocation registryName) {
+		for (SimpleContainerScreenFactory factory : factories) {
 			if (factory.getRegistryName().equals(registryName)) {
 				return factory;
 			}
