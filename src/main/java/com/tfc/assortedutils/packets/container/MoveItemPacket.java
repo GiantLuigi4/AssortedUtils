@@ -1,10 +1,10 @@
 package com.tfc.assortedutils.packets.container;
 
+import com.tfc.assortedutils.API.networking.SimplePacket;
 import net.minecraft.network.INetHandler;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 
-public class MoveItemPacket implements IPacket {
+public class MoveItemPacket extends SimplePacket {
 	public int from;
 	public int to;
 	

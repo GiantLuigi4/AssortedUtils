@@ -2,6 +2,7 @@ package com.tfc.assortedutils;
 
 import com.tfc.assortedutils.API.gui.container.ItemSlot;
 import com.tfc.assortedutils.API.gui.container.SimpleContainer;
+import com.tfc.assortedutils.API.networking.AutomatedSimpleChannel;
 import com.tfc.assortedutils.custom_registries.debug_renderer.DebugRegistryBuilder;
 import com.tfc.assortedutils.custom_registries.simple_container_screens.SimpleContainerScreenRegistryBuilder;
 import com.tfc.assortedutils.packets.PathPacket;
@@ -9,6 +10,7 @@ import com.tfc.assortedutils.packets.StructurePacket;
 import com.tfc.assortedutils.packets.container.ContainerPacket;
 import com.tfc.assortedutils.packets.container.MoveItemPacket;
 import com.tfc.assortedutils.packets.container.SimpleContainerActionPacket;
+import com.tfc.assortedutils.packets.container.UpdateContainerPacket;
 import com.tfc.assortedutils.registry.ItemRegistry;
 import com.tfc.assortedutils.registry.RendererRegistry;
 import com.tfc.better_fps_graph.API.Profiler;
@@ -21,14 +23,12 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("assortedutils")
 public class AssortedUtils {
 	
-	public static final SimpleChannel NETWORK_INSTANCE = NetworkRegistry.newSimpleChannel(
+	public static final AutomatedSimpleChannel NETWORK_INSTANCE = AutomatedSimpleChannel.create(
 			new ResourceLocation("assorted_utils", "main"),
 			() -> "1",
 			"1"::equals,
@@ -36,16 +36,10 @@ public class AssortedUtils {
 	);
 	
 	public AssortedUtils() {
-		NETWORK_INSTANCE.registerMessage(0, PathPacket.class, PathPacket::writePacketData, PathPacket::new, (packet, context) -> {
-			context.get().setPacketHandled(true);
-		});
-		NETWORK_INSTANCE.registerMessage(1, StructurePacket.class, StructurePacket::writePacketData, StructurePacket::new, (packet, context) -> {
-			context.get().setPacketHandled(true);
-		});
-		NETWORK_INSTANCE.registerMessage(2, ContainerPacket.class, ContainerPacket::writePacketData, ContainerPacket::new, (packet, context) -> {
-			context.get().setPacketHandled(true);
-		});
-		NETWORK_INSTANCE.registerMessage(3, MoveItemPacket.class, MoveItemPacket::writePacketData, MoveItemPacket::new, (packet, context) -> {
+		NETWORK_INSTANCE.registerPacket(PathPacket.class, PathPacket::new);
+		NETWORK_INSTANCE.registerPacket(StructurePacket.class, StructurePacket::new);
+		NETWORK_INSTANCE.registerPacket(ContainerPacket.class, ContainerPacket::new);
+		NETWORK_INSTANCE.registerPacket(MoveItemPacket.class, MoveItemPacket::new, (packet, context) -> {
 			if (context.get().getSender() != null) {
 				Container container = context.get().getSender().openContainer;
 				if (container instanceof SimpleContainer) {
@@ -61,12 +55,13 @@ public class AssortedUtils {
 				context.get().setPacketHandled(true);
 			}
 		});
-		NETWORK_INSTANCE.registerMessage(4, SimpleContainerActionPacket.class, SimpleContainerActionPacket::writePacketData, SimpleContainerActionPacket::new, (packet, context) -> {
+		NETWORK_INSTANCE.registerPacket(SimpleContainerActionPacket.class, SimpleContainerActionPacket::new, (packet, context) -> {
 			if (packet.action == 0) {
 				context.get().getSender().closeContainer();
 			}
 			context.get().setPacketHandled(true);
 		});
+		NETWORK_INSTANCE.registerPacket(UpdateContainerPacket.class, UpdateContainerPacket::new);
 		
 		ItemRegistry.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		

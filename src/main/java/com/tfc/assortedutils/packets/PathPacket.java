@@ -1,9 +1,9 @@
 package com.tfc.assortedutils.packets;
 
+import com.tfc.assortedutils.API.networking.SimplePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.INetHandler;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.Arrays;
 
-public class PathPacket implements IPacket {
+public class PathPacket extends SimplePacket {
 	Path path;
 	Entity entity;
 	float distance;

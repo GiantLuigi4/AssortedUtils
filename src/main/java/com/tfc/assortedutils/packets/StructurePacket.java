@@ -1,8 +1,8 @@
 package com.tfc.assortedutils.packets;
 
+import com.tfc.assortedutils.API.networking.SimplePacket;
 import com.tfc.assortedutils.registry.RendererRegistry;
 import net.minecraft.network.INetHandler;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StructurePacket implements IPacket {
+public class StructurePacket extends SimplePacket {
 	StructureStart<?> structureStart;
 	String dimension;
 	

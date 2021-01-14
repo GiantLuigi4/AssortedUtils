@@ -3,6 +3,7 @@ package com.tfc.assortedutils.packets.container;
 import com.tfc.assortedutils.API.gui.container.SimpleContainer;
 import com.tfc.assortedutils.API.gui.screen.SimpleContainerScreen;
 import com.tfc.assortedutils.API.gui.screen.SimpleContainerScreenFactory;
+import com.tfc.assortedutils.API.networking.SimplePacket;
 import com.tfc.assortedutils.custom_registries.simple_container_screens.SimpleContainerScreenRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -10,7 +11,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.INetHandler;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ContainerPacket implements IPacket {
+public class ContainerPacket extends SimplePacket {
 	String regName;
 	CompoundNBT containerNBT;
 	

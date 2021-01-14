@@ -37,7 +37,5 @@ public class DebugPacketSenderCode {
 				PacketDistributor.ALL.noArg(),
 				new StructurePacket(structureStart, worldIn.getWorld().getDimensionKey().getLocation().toString())
 		);
-//		worldIn.getPlayers().forEach(player->{
-//		});
 	}
 }
