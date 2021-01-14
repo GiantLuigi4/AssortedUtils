@@ -53,4 +53,29 @@ public class AutomatedSimpleChannel extends SimpleChannel {
 	public <MSG extends SimplePacket> void registerPacket(Class<MSG> packetClass, Function<PacketBuffer, MSG> packetSupplier, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {
 		registerMessage(index++, packetClass, SimplePacket::writePacketData, packetSupplier, messageConsumer);
 	}
+	
+	public void incrementIndex() {
+		index++;
+	}
+	
+	//TODO: figure out how to at forge hooks to public, (whoever made "IndexedMessageCodec.MessageHandler", why the heck did you make this not have any modifiers?)
+//	@Override
+//	public <MSG> IndexedMessageCodec.MessageHandler<MSG> registerMessage(int index, Class<MSG> messageType, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer) {
+//		if (index >= 0) {
+//			this.index = Math.max(this.index + 1, index + 1);
+//			return super.registerMessage(index, messageType, encoder, decoder, messageConsumer);
+//		} else {
+//			return super.registerMessage(this.index++, messageType, encoder, decoder, messageConsumer);
+//		}
+//	}
+//
+//	@Override
+//	public <MSG> IndexedMessageCodec.MessageHandler<MSG> registerMessage(int index, Class<MSG> messageType, BiConsumer<MSG, PacketBuffer> encoder, Function<PacketBuffer, MSG> decoder, BiConsumer<MSG, Supplier<NetworkEvent.Context>> messageConsumer, Optional<NetworkDirection> networkDirection) {
+//		if (index >= 0) {
+//			this.index = Math.max(this.index + 1, index + 1);
+//			return super.registerMessage(index, messageType, encoder, decoder, messageConsumer, networkDirection);
+//		} else {
+//			return super.registerMessage(this.index++, messageType, encoder, decoder, messageConsumer, networkDirection);
+//		}
+//	}
 }

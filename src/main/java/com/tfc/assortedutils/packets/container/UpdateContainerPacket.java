@@ -18,7 +18,6 @@ public class UpdateContainerPacket extends SimplePacket {
 	
 	public UpdateContainerPacket(PacketBuffer buffer) {
 		super(buffer);
-		readPacketData(buffer);
 	}
 	
 	@Override
