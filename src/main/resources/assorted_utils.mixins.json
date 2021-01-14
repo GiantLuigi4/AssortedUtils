@@ -11,6 +11,7 @@
     "DebugPacketSenderMixin",
     "EnderDragonEntityMixin",
     "EntityMixin",
+    "NetworkRegistryAccessor",
     "PlayerEntityMixin",
     "ServerNetPlayHandlerMixin",
     "VoxelShapeAccessor"
