@@ -2,6 +2,8 @@ package com.tfc.assortedutils.packets.container;
 
 import com.tfc.assortedutils.API.gui.container.SimpleContainer;
 import com.tfc.assortedutils.API.gui.screen.SimpleContainerScreen;
+import com.tfc.assortedutils.API.gui.screen.SimpleContainerScreenFactory;
+import com.tfc.assortedutils.custom_registries.simple_container_screens.SimpleContainerScreenRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.nbt.CompoundNBT;
@@ -39,9 +41,14 @@ public class ContainerPacket implements IPacket {
 			regName = buf.readString();
 			containerNBT = buf.readCompoundTag();
 			ContainerType<?> type = ForgeRegistries.CONTAINERS.getValue(new ResourceLocation(regName));
-			SimpleContainerScreen container = new SimpleContainerScreen<>(StringTextComponent.EMPTY, Minecraft.getInstance(), type);
-			container.deseralize(containerNBT);
-			Minecraft.getInstance().currentScreen = container;
+			SimpleContainerScreenFactory factory = SimpleContainerScreenRegistry.get(new ResourceLocation(regName));
+			SimpleContainerScreen<?> screen;
+			if (factory == null)
+				screen = new SimpleContainerScreen<>(StringTextComponent.EMPTY, Minecraft.getInstance(), type);
+				//TODO: make the server send the text component
+			else screen = factory.create(StringTextComponent.EMPTY, Minecraft.getInstance(), type);
+			screen.deseralize(containerNBT);
+			Minecraft.getInstance().currentScreen = screen;
 		}
 	}
 	

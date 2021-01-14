@@ -3,6 +3,7 @@ package com.tfc.assortedutils;
 import com.tfc.assortedutils.API.gui.container.ItemSlot;
 import com.tfc.assortedutils.API.gui.container.SimpleContainer;
 import com.tfc.assortedutils.custom_registries.debug_renderer.DebugRegistryBuilder;
+import com.tfc.assortedutils.custom_registries.simple_container_screens.SimpleContainerScreenRegistryBuilder;
 import com.tfc.assortedutils.packets.PathPacket;
 import com.tfc.assortedutils.packets.StructurePacket;
 import com.tfc.assortedutils.packets.container.ContainerPacket;
@@ -79,6 +80,7 @@ public class AssortedUtils {
 	
 	public static void createRegistries(RegistryEvent.NewRegistry event) {
 		new DebugRegistryBuilder().create();
+		new SimpleContainerScreenRegistryBuilder().create();
 	}
 	
 	public static void createBetterFPSGraphSection(String name) {
