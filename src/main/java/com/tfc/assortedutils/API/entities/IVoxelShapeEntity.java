@@ -1,5 +1,6 @@
 package com.tfc.assortedutils.API.entities;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -16,5 +17,15 @@ public interface IVoxelShapeEntity {
 	 */
 	default ActionResultType onInteract(PlayerEntity player, VoxelShapeEntityRaytraceResult result) {
 		return ActionResultType.PASS;
+	}
+	
+	/**
+	 * Determines if the entity should act solid (like a block) to a specific entity
+	 *
+	 * @param entity the entity colliding with your voxel shape entity
+	 * @return if the voxelshape entity is solid to said entity
+	 */
+	default boolean isSolid(Entity entity) {
+		return false;
 	}
 }
