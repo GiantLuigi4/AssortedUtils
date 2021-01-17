@@ -16,8 +16,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.*;
 import java.util.stream.Collectors;
 
-//old code, copy pasted, but it works fine
-//I might clean this up, but I probably won't tbh
 public class CustomBuffer implements IRenderTypeBuffer {
 	public ArrayList<CustomVertexBuilder> builders = new ArrayList<>();
 	
@@ -48,11 +46,6 @@ public class CustomBuffer implements IRenderTypeBuffer {
 		});
 	});
 	
-	
-	private static void put(Object2ObjectLinkedOpenHashMap<RenderType, CustomBufferBuilder> mapBuildersIn, RenderType renderTypeIn) {
-		mapBuildersIn.put(renderTypeIn, new CustomBufferBuilder(renderTypeIn.getBufferSize(), renderTypeIn));
-	}
-	
 	@OnlyIn(Dist.CLIENT)
 	public static class RegionRenderCacheBuilder {
 		private final Map<RenderType, CustomBufferBuilder> builders = RenderType.getBlockRenderTypes().stream().collect(Collectors.toMap((p_228369_0_) -> {
@@ -74,15 +67,22 @@ public class CustomBuffer implements IRenderTypeBuffer {
 		}
 	}
 	
-	p
-	@OnlyIn(Dist.CLIENT)
+	private static void put(Object2ObjectLinkedOpenHashMap<RenderType, CustomBufferBuilder> mapBuildersIn, RenderType renderTypeIn) {
+		mapBuildersIn.put(renderTypeIn, new CustomBufferBuilder(renderTypeIn.getBufferSize(), renderTypeIn));
+	}
 	
+	public interface IElement {
+		public void addToBuffer(IRenderTypeBuffer.Impl buffer);
+	}
+	
+	@OnlyIn(Dist.CLIENT)
 	public static class Impl extends CustomBuffer {
 		protected final CustomBufferBuilder buffer;
 		protected final Map<RenderType, CustomBufferBuilder> fixedBuffers;
-		protected final Set<BufferBuilder> startedBuffers = Sets.newHashSet();
-		public ArrayList<BufferBuilder> builders = new ArrayList<>();
 		protected Optional<RenderType> lastRenderType = Optional.empty();
+		protected final Set<BufferBuilder> startedBuffers = Sets.newHashSet();
+		
+		public ArrayList<BufferBuilder> builders = new ArrayList<>();
 		
 		public Impl(CustomBufferBuilder bufferIn, Map<RenderType, CustomBufferBuilder> fixedBuffersIn) {
 			this.buffer = bufferIn;
@@ -154,15 +154,7 @@ public class CustomBuffer implements IRenderTypeBuffer {
 		}
 	}
 	
-	tat
-	ublic
-	
-	static class CustomBufferBuilder extends BufferBuilder {
-		Veprotected ArrayList<IElement>elements=new ArrayList<>();
-		rtex vertex = new Vertex();
-		ivate RenderType
-		type;
-		
+	public static class CustomBufferBuilder extends BufferBuilder {
 		public CustomBufferBuilder(int bufferSizeIn, RenderType type) {
 			super(bufferSizeIn);
 			this.type = type;
@@ -179,6 +171,10 @@ public class CustomBuffer implements IRenderTypeBuffer {
 		public void finishDrawing() {
 //			super.finishDrawing();
 		}
+		
+		protected ArrayList<IElement> elements = new ArrayList<>();
+		Vertex vertex = new Vertex();
+		private RenderType type;
 		
 		@Override
 		public IVertexBuilder lightmap(int lightmapUV) {
@@ -254,10 +250,7 @@ public class CustomBuffer implements IRenderTypeBuffer {
 		}
 	}
 	
-	public stat
-	ic
-	
-	class CustomVertexBuilder implements IVertexBuilder {
+	public static class CustomVertexBuilder implements IVertexBuilder {
 		public ArrayList<Vertex> vertices = new ArrayList<>();
 		public Vertex vertex = new Vertex();
 		public RenderType type;
@@ -340,10 +333,7 @@ public class CustomBuffer implements IRenderTypeBuffer {
 		}
 	}
 	
-	public stat
-	ic
-	
-	class Vertex {
+	public static class Vertex {
 		public double x;
 		public double y;
 		public double z;
@@ -362,13 +352,10 @@ public class CustomBuffer implements IRenderTypeBuffer {
 		public float nz;
 	}
 	
-	public snte
-	ic
-	
-	class VertexElement extends Vertex implements IElement {
-		public VerderType type;
+	public static class VertexElement extends Vertex implements IElement {
+		public RenderType type;
 		
-		@OverrntexElement(Vertex vert, RenderType type) {
+		public VertexElement(Vertex vert, RenderType type) {
 			this.x = vert.x;
 			this.y = vert.y;
 			this.z = vert.z;
@@ -388,19 +375,12 @@ public class CustomBuffer implements IRenderTypeBuffer {
 			this.type = type;
 		}
 		
-		public Reide
-		
+		@Override
 		public void addToBuffer(IRenderTypeBuffer.Impl buffer) {
 			try {
 				buffer.getBuffer(this.type);
 			} catch (Exception err) {
 			}
 		}
-	}
-	
-	public irface IElement
-	
-	{
-		public void addToBuffer (IRenderTypeBuffer.Impl buffer);
 	}
 }
