@@ -11,6 +11,7 @@ Currenlt list:
   -debug tools (such as ai debug, heightmap debug, structure debug (laggy))
   -rendering utils
   -conditional registries
+  -color utils
 ```
 
 ```

@@ -74,8 +74,8 @@ public class Color {
 		float hue = 0;
 		if (delta == 0) ;
 		else if (colorMax == r) hue = 60 * (((g - b) / delta) % 6);
-		else if (colorMax == b) hue = 60 * ((b - r) + 2);
-		else if (colorMax == g) hue = 60 * ((b - r) + 4);
+		else if (colorMax == g) hue = 60 * ((b - r) + 2);
+		else if (colorMax == b) hue = 60 * ((r - g) + 4);
 		
 		float saturation = 0;
 		if (colorMax != 0) saturation = delta / colorMax;
@@ -166,35 +166,28 @@ public class Color {
 	
 	/*(thanks lorenzo): https://www.rapidtables.com/convert/color/hsv-to-rgb.html*/
 	public Color fromHSV(float hue, float saturation, float value) {
-		hue = hue % 360;
-		if (hue < 0) hue = hue + 360;
+		hue %= 360;
+		if (hue < 0) hue += 360;
 		
 		float c = value * saturation;
-		float x = c * (1 - (Math.abs((hue / 60) % 2) - 1));
+		float x = c * (1 - Math.abs((hue / 60) % 2 - 1));
+		
 		float m = value - c;
 		
 		float rPrime = 0;
 		float gPrime = 0;
 		float bPrime = 0;
 		
-		if ((0 <= hue) && (hue < 60)) {
-			rPrime = c;
-			gPrime = x;
-		} else if ((60 <= hue) && (hue < 120)) {
-			rPrime = x;
-			gPrime = c;
-		} else if ((120 <= hue) && (hue < 180)) {
-			gPrime = c;
-			bPrime = x;
-		} else if ((180 <= hue) && (hue < 240)) {
-			gPrime = x;
-			bPrime = c;
-		} else if ((240 <= hue) && (hue < 300)) {
-			rPrime = x;
-			bPrime = c;
-		} else {
-			rPrime = c;
-			bPrime = x;
+		float num = (hue / 60f);
+		if ((0 <= num) && (num < 2)) {
+			rPrime = num < 1 ? c : c;
+			gPrime = num < 1 ? x : c;
+		} else if ((2 <= num) && (num < 4)) {
+			gPrime = num < 3 ? c : x;
+			bPrime = num < 3 ? x : c;
+		} else if ((4 <= num) && (num < 6)) {
+			rPrime = num < 5 ? x : c;
+			bPrime = num < 5 ? c : x;
 		}
 		
 		float r = (rPrime + m) * 255;
