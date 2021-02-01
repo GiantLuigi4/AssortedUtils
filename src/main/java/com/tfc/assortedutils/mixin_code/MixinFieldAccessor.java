@@ -1,6 +1,5 @@
 package com.tfc.assortedutils.mixin_code;
 
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.play.client.CUseEntityPacket;
 import net.minecraft.util.Direction;
@@ -48,7 +47,7 @@ public class MixinFieldAccessor {
 		}
 	}
 	
-	public static int getUseEntityDirAsInt(ClientPlayerEntity player) {
+	public static int getUseEntityDirAsInt(PlayerEntity player) {
 		Direction dir = getUseEntityDir(player);
 		if (dir != null) return dir.ordinal();
 		else return -1;
