@@ -1,6 +1,8 @@
 package com.tfc.assortedutils.API.gui.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.tfc.assortedutils.AssortedUtils;
+import com.tfc.assortedutils.packets.container.SimpleContainerActionPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
@@ -173,5 +175,6 @@ public class SimpleScreen extends Screen {
 	@Override
 	public void closeScreen() {
 		super.closeScreen();
+		AssortedUtils.NETWORK_INSTANCE.sendToServer(new SimpleContainerActionPacket(0));
 	}
 }

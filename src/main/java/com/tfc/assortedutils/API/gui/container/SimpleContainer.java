@@ -45,7 +45,10 @@ public class SimpleContainer extends Container {
 	public void resync() {
 		ArrayList<PlayerEntity> playersToRemove = new ArrayList<>();
 		for (PlayerEntity player : players) {
-			if (!player.world.getPlayers().contains(player)) {
+			if (
+					!player.world.getPlayers().contains(player) ||
+							player.openContainer != this
+			) {
 				playersToRemove.add(player);
 			} else {
 				AssortedUtils.NETWORK_INSTANCE.send(
