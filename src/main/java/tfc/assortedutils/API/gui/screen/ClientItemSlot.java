@@ -20,6 +20,15 @@ public class ClientItemSlot extends ItemSlot {
 	
 	public ItemStack stack;
 	
+	public boolean isInventorySlot = true;
+	
+	public ClientItemSlot(ItemStack stack, int index, int x, int y, SimpleScreen screen, boolean isInventorySlot) {
+		super(null, index, x, y);
+		this.stack = stack;
+		this.screen = screen;
+		this.isInventorySlot = isInventorySlot;
+	}
+	
 	public ClientItemSlot(ItemStack stack, int index, int x, int y, SimpleScreen screen) {
 		super(null, index, x, y);
 		this.stack = stack;
@@ -29,7 +38,26 @@ public class ClientItemSlot extends ItemSlot {
 	@Override
 	public void set(ItemStack stack) {
 //		super.set(stack);
+		if (isInventorySlot) {
+			screen.getMinecraft().player.inventory.setInventorySlotContents(index, stack);
+		}
 		this.stack = stack;
+	}
+	
+	public void merge(ItemStack stack) {
+		if (stack.isItemEqual(this.stack)) {
+			if (stack.hasTag() && this.stack.hasTag()) {
+				if (stack.getTag() != null) {
+					if (!stack.getTag().equals(this.stack.getTag())) return;
+				} else if (this.stack.getTag() != null) return;
+			} else if (stack.hasTag() != this.stack.hasTag()) return;
+			int amt = this.stack.getCount() - stack.getCount();
+			amt = Math.abs(amt);
+			int maxChange = (this.stack.getCount() - stack.getMaxStackSize());
+			if (amt > maxChange) amt = maxChange;
+			this.stack.grow(amt);
+			this.stack.shrink(amt);
+		}
 	}
 	
 	@Override
@@ -48,7 +76,9 @@ public class ClientItemSlot extends ItemSlot {
 	}
 	
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, int guiLeft, int guiTop, Screen screen) {
-		ItemStack stack = screen.getMinecraft().player.inventory.getStackInSlot(index);
+		ItemStack stack = isInventorySlot ?
+				screen.getMinecraft().player.inventory.getStackInSlot(index) :
+				this.stack;
 		
 		if (renderSlot) {
 			screen.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/inventory.png"));

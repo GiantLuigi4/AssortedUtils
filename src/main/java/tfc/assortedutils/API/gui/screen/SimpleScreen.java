@@ -45,6 +45,11 @@ public class SimpleScreen extends Screen {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		matrixStack.push();
+		
+		Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(
+				mouseStack, mouseX, mouseY
+		);
+		
 		int guiLeft = this.width / 2 - sizeX;
 		int guiTop = this.height / 2 - sizeY;
 		for (ClientItemSlot slot : slots) slot.render(matrixStack, mouseX, mouseY, guiLeft, guiTop, this);
@@ -126,8 +131,14 @@ public class SimpleScreen extends Screen {
 				if (slot.click((int) mouseX, (int) mouseY, guiLeft, guiTop, this)) {
 					ItemStack oldMouseStack = mouseStack;
 					mouseStack = slot.stack;
-					if (oldMouseStack == null) slot.stack = ItemStack.EMPTY;
-					else slot.stack = oldMouseStack;
+					if (oldMouseStack == null) {
+						slot.set(ItemStack.EMPTY);
+					} else {
+						slot.merge(oldMouseStack);
+						if (!oldMouseStack.isEmpty()) {
+							mouseStack = oldMouseStack;
+						}
+					}
 					clickedID = slot.index;
 					if (oldMouseStack == null)
 						AssortedUtils.NETWORK_INSTANCE.sendToServer(new GrabItemPacket(clickedID));
