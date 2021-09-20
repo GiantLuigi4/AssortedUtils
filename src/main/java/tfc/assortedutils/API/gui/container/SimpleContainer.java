@@ -18,11 +18,14 @@ import java.util.ArrayList;
 
 public class SimpleContainer extends Container {
 	private final ArrayList<PlayerEntity> players = new ArrayList<>();
-	public ArrayList<ItemSlot> slots = new ArrayList();
+	public final ItemSlot tempSlot = new ItemSlot(new WorkerInventory(), -1, -100, -100);
+	public ArrayList<ItemSlot> slots = new ArrayList<>();
 	
 	public SimpleContainer(@Nullable ContainerType<?> type, int id) {
 		super(type, id);
 	}
+	
+	public boolean isInteractable;
 	
 	@Override
 	public Slot getSlot(int slotId) {
@@ -71,12 +74,24 @@ public class SimpleContainer extends Container {
 			slot.putInt("y", item.y);
 			inventoryNBT.add(slot);
 		});
+		thisNBT.putBoolean("interactable", isInteractable);
 		thisNBT.put("inventory", inventoryNBT);
+		if (isInteractable) {
+			CompoundNBT slot = new CompoundNBT();
+			ItemSlot item = tempSlot;
+			slot.putString("item", item.get().getItem().getRegistryName().toString());
+			if (item.get().hasTag()) slot.put("tag", item.get().getOrCreateTag());
+			thisNBT.put("workerSlot", slot);
+		}
 		return thisNBT;
 	}
 	
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
 		return true;
+	}
+	
+	public void setSlot(int index, ItemStack value) {
+		slots.get(index).set(value);
 	}
 }

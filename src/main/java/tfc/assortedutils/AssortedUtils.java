@@ -17,10 +17,7 @@ import tfc.assortedutils.custom_registries.debug_renderer.DebugRegistryBuilder;
 import tfc.assortedutils.custom_registries.simple_container_screens.SimpleContainerScreenRegistryBuilder;
 import tfc.assortedutils.packets.PathPacket;
 import tfc.assortedutils.packets.StructurePacket;
-import tfc.assortedutils.packets.container.ContainerPacket;
-import tfc.assortedutils.packets.container.MoveItemPacket;
-import tfc.assortedutils.packets.container.SimpleContainerActionPacket;
-import tfc.assortedutils.packets.container.UpdateContainerPacket;
+import tfc.assortedutils.packets.container.*;
 import tfc.assortedutils.registry.ItemRegistry;
 import tfc.assortedutils.registry.RendererRegistry;
 
@@ -30,9 +27,9 @@ public class AssortedUtils {
 	
 	public static final AutomatedSimpleChannel NETWORK_INSTANCE = AutomatedSimpleChannel.create(
 			new ResourceLocation("assorted_utils", "main"),
-			() -> "1",
-			"1"::equals,
-			"1"::equals
+			() -> "2",
+			"2"::equals,
+			"2"::equals
 	);
 	
 	public AssortedUtils() {
@@ -62,6 +59,7 @@ public class AssortedUtils {
 			context.get().setPacketHandled(true);
 		});
 		NETWORK_INSTANCE.registerPacket(UpdateContainerPacket.class, UpdateContainerPacket::new);
+		NETWORK_INSTANCE.registerPacket(GrabItemPacket.class, GrabItemPacket::new);
 		
 		ItemRegistry.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		

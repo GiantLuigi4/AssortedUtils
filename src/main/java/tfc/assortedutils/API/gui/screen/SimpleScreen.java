@@ -13,6 +13,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 import tfc.assortedutils.AssortedUtils;
+import tfc.assortedutils.packets.container.GrabItemPacket;
+import tfc.assortedutils.packets.container.MoveItemPacket;
 import tfc.assortedutils.packets.container.SimpleContainerActionPacket;
 
 import java.util.ArrayList;
@@ -23,6 +25,10 @@ public class SimpleScreen extends Screen {
 	public int sizeY = 0;
 	public ArrayList<ClientItemSlot> slots = new ArrayList<>();
 	private boolean focusAlternator = false;
+	
+	public ItemStack mouseStack = null;
+	public int clickedID = -1;
+	public boolean isInteractable = false;
 	
 	public SimpleScreen(ITextComponent titleIn, Minecraft minecraft) {
 		super(titleIn);
@@ -59,6 +65,15 @@ public class SimpleScreen extends Screen {
 				slots.add(slot);
 			}
 		}
+		
+		if (nbt.contains("workerSlot")) {
+			CompoundNBT item = nbt.getCompound("workerSlot");
+			ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(item.getString("item"))));
+			if (item.contains("tag")) stack.setTag(item.getCompound("tag"));
+			mouseStack = stack;
+		}
+		
+		if (nbt.contains("interactable")) isInteractable = nbt.getBoolean("interactable");
 	}
 	
 	public void drawBackground(MatrixStack matrixStack, int x, int y, int width, int height) {
@@ -102,6 +117,24 @@ public class SimpleScreen extends Screen {
 		for (Widget button1 : buttons) {
 			boolean clicked = button1.mouseClicked(mouseX, mouseY, button);
 			if (clicked) return true;
+		}
+		if (isInteractable) {
+			int guiLeft = this.width / 2 - sizeX;
+			int guiTop = this.height / 2 - sizeY;
+			for (ClientItemSlot slot : slots) {
+				// TODO: sneak transfer
+				if (slot.click((int) mouseX, (int) mouseY, guiLeft, guiTop, this)) {
+					ItemStack oldMouseStack = mouseStack;
+					mouseStack = slot.stack;
+					if (oldMouseStack == null) slot.stack = ItemStack.EMPTY;
+					else slot.stack = oldMouseStack;
+					clickedID = slot.index;
+					if (oldMouseStack == null)
+						AssortedUtils.NETWORK_INSTANCE.sendToServer(new GrabItemPacket(clickedID));
+					else AssortedUtils.NETWORK_INSTANCE.sendToServer(new MoveItemPacket(-1, clickedID));
+					return true;
+				}
+			}
 		}
 		
 		return super.mouseClicked(mouseX, mouseY, button);

@@ -47,6 +47,7 @@ public class AutomatedSimpleChannel extends SimpleChannel {
 	public <MSG extends SimplePacket> void registerPacket(Class<MSG> packetClass, Function<PacketBuffer, MSG> packetSupplier) {
 		registerMessage(index++, packetClass, SimplePacket::writePacketData, packetSupplier, (packet, context) -> {
 			context.get().setPacketHandled(true);
+			packet.handle(context);
 		});
 	}
 	

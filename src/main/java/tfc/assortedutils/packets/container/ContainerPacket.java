@@ -5,7 +5,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.INetHandler;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
@@ -70,9 +69,5 @@ public class ContainerPacket extends SimplePacket {
 	public void writePacketData(PacketBuffer buf) {
 		buf.writeString(regName);
 		buf.writeCompoundTag(containerNBT);
-	}
-	
-	@Override
-	public void processPacket(INetHandler handler) {
 	}
 }
