@@ -65,13 +65,13 @@ public class SimpleScreen extends Screen {
 				slots.add(slot);
 			}
 		}
-		
-		if (nbt.contains("workerSlot")) {
-			CompoundNBT item = nbt.getCompound("workerSlot");
-			ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(item.getString("item"))));
-			if (item.contains("tag")) stack.setTag(item.getCompound("tag"));
-			mouseStack = stack;
-		}
+
+//		if (nbt.contains("workerSlot")) {
+//			CompoundNBT item = nbt.getCompound("workerSlot");
+//			ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(item.getString("item"))));
+//			if (item.contains("tag")) stack.setTag(item.getCompound("tag"));
+//			mouseStack = stack;
+//		}
 		
 		if (nbt.contains("interactable")) isInteractable = nbt.getBoolean("interactable");
 	}
@@ -169,6 +169,7 @@ public class SimpleScreen extends Screen {
 				boolean clicked = button1.charTyped(codePoint, modifiers);
 				if (clicked) return true;
 			}
+			// TODO: number key hotbar slot transfer
 		}
 		
 		return super.charTyped(codePoint, modifiers);

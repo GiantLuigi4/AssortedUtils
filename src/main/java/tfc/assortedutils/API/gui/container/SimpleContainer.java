@@ -15,10 +15,12 @@ import tfc.assortedutils.packets.container.UpdateContainerPacket;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class SimpleContainer extends Container {
 	private final ArrayList<PlayerEntity> players = new ArrayList<>();
-	public final ItemSlot tempSlot = new ItemSlot(new WorkerInventory(), -1, -100, -100);
+	public final HashMap<UUID, ItemSlot> tempSlots = new HashMap<>();
 	public ArrayList<ItemSlot> slots = new ArrayList<>();
 	
 	public SimpleContainer(@Nullable ContainerType<?> type, int id) {
@@ -43,13 +45,27 @@ public class SimpleContainer extends Container {
 				PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) playerEntity),
 				new ContainerPacket(this, this.getType())
 		);
+		if (!tempSlots.containsKey(playerEntity.getUniqueID())) {
+			tempSlots.put(playerEntity.getUniqueID(), new ItemSlot(new WorkerInventory(), -1, -100, -100));
+		}
+	}
+	
+	@Override
+	public void onContainerClosed(PlayerEntity playerEntity) {
+		super.onContainerClosed(playerEntity);
+		players.remove(playerEntity);
+		if (tempSlots.containsKey(playerEntity.getUniqueID())) {
+			playerEntity.dropItem(tempSlots.get(playerEntity.getUniqueID()).get(), true);
+			tempSlots.remove(playerEntity.getUniqueID());
+		}
 	}
 	
 	public void resync() {
 		ArrayList<PlayerEntity> playersToRemove = new ArrayList<>();
 		for (PlayerEntity player : players) {
 			if (
-					!player.world.getPlayers().contains(player) ||
+					player.world == null ||
+							!player.world.getPlayers().contains(player) ||
 							player.openContainer != this
 			) {
 				playersToRemove.add(player);
@@ -60,7 +76,13 @@ public class SimpleContainer extends Container {
 				);
 			}
 		}
-		for (PlayerEntity playerEntity : playersToRemove) players.remove(playerEntity);
+		for (PlayerEntity playerEntity : playersToRemove) {
+			players.remove(playerEntity);
+			if (tempSlots.containsKey(playerEntity.getUniqueID())) {
+				playerEntity.dropItem(tempSlots.get(playerEntity.getUniqueID()).get(), true);
+				tempSlots.remove(playerEntity.getUniqueID());
+			}
+		}
 	}
 	
 	public CompoundNBT serialize() {
@@ -76,13 +98,13 @@ public class SimpleContainer extends Container {
 		});
 		thisNBT.putBoolean("interactable", isInteractable);
 		thisNBT.put("inventory", inventoryNBT);
-		if (isInteractable) {
-			CompoundNBT slot = new CompoundNBT();
-			ItemSlot item = tempSlot;
-			slot.putString("item", item.get().getItem().getRegistryName().toString());
-			if (item.get().hasTag()) slot.put("tag", item.get().getOrCreateTag());
-			thisNBT.put("workerSlot", slot);
-		}
+//		if (isInteractable) {
+//			CompoundNBT slot = new CompoundNBT();
+//			ItemSlot item = tempSlots;
+//			slot.putString("item", item.get().getItem().getRegistryName().toString());
+//			if (item.get().hasTag()) slot.put("tag", item.get().getOrCreateTag());
+//			thisNBT.put("workerSlot", slot);
+//		}
 		return thisNBT;
 	}
 	

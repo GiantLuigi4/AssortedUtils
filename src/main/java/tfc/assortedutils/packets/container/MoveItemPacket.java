@@ -42,15 +42,17 @@ public class MoveItemPacket extends SimplePacket {
 			if (sender.openContainer instanceof SimpleContainer) {
 				SimpleContainer container = (SimpleContainer) sender.openContainer;
 				
+				if (!container.tempSlots.containsKey(sender.getUniqueID())) return;
+				
 				ItemStack src;
-				if (from == -1) src = container.tempSlot.get();
+				if (from == -1) src = container.tempSlots.get(sender.getUniqueID()).get();
 				else src = container.getItem(from);
 				if (src == null) return;
 				
 				ItemStack dst = container.getItem(to);
 				container.setSlot(to, src);
 				if (!(dst == null || dst.isEmpty())) {
-					if (from == -1) container.tempSlot.set(dst);
+					if (from == -1) container.tempSlots.get(sender.getUniqueID()).set(dst);
 					else container.setSlot(from, dst);
 				}
 			}
