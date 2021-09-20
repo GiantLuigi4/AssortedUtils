@@ -11,9 +11,15 @@ import java.util.function.Supplier;
 
 public class GrabItemPacket extends SimplePacket {
 	public int from;
+	public int count = 64;
 	
 	public GrabItemPacket(int from) {
 		this.from = from;
+	}
+	
+	public GrabItemPacket(int from, int count) {
+		this.from = from;
+		this.count = count;
 	}
 	
 	public GrabItemPacket(PacketBuffer buf) {
@@ -41,9 +47,10 @@ public class GrabItemPacket extends SimplePacket {
 				if (!container.tempSlots.containsKey(sender.getUniqueID())) return;
 				
 				ItemStack stack = container.getItem(sender, from);
-				container.setSlot(sender, from, ItemStack.EMPTY);
+//				container.setSlot(sender, from, ItemStack.EMPTY);
 				
 				if (stack == null) return;
+				stack = stack.split(Math.min(count, stack.getCount()));
 				
 				if (container.tempSlots.get(sender.getUniqueID()).inventory.isEmpty())
 					container.tempSlots.get(sender.getUniqueID()).set(stack);

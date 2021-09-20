@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.lwjgl.glfw.GLFW;
 import tfc.assortedutils.API.misc.ItemStackUtils;
 import tfc.assortedutils.AssortedUtils;
 import tfc.assortedutils.packets.container.GrabItemPacket;
@@ -46,13 +47,13 @@ public class SimpleScreen extends Screen {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		matrixStack.push();
+		int guiLeft = this.width / 2 - sizeX;
+		int guiTop = this.height / 2 - sizeY;
+		for (ClientItemSlot slot : slots) slot.render(matrixStack, mouseX, mouseY, guiLeft, guiTop, this);
 		if (mouseStack != null) {
 			Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(mouseStack, mouseX - 7, mouseY - 7);
 			Minecraft.getInstance().getItemRenderer().renderItemOverlayIntoGUI(Minecraft.getInstance().fontRenderer, mouseStack, mouseX - 7, mouseY - 7, null);
 		}
-		int guiLeft = this.width / 2 - sizeX;
-		int guiTop = this.height / 2 - sizeY;
-		for (ClientItemSlot slot : slots) slot.render(matrixStack, mouseX, mouseY, guiLeft, guiTop, this);
 		matrixStack.pop();
 	}
 	
@@ -130,13 +131,18 @@ public class SimpleScreen extends Screen {
 				// TODO: sneak transfer
 				if (slot.click((int) mouseX, (int) mouseY, guiLeft, guiTop, this)) {
 					ItemStack oldMouseStack = mouseStack;
-					mouseStack = slot.stack;
+					if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+						mouseStack = slot.stack.split(slot.stack.getCount() / 2);
+					}
 					if (oldMouseStack == null) {
-						slot.set(ItemStack.EMPTY);
+//						slot.set(ItemStack.EMPTY);
+						slot.set(slot.stack);
 					} else {
 						if (oldMouseStack.isEmpty()) {
-							mouseStack = slot.get();
-							slot.set(ItemStack.EMPTY);
+//							mouseStack = slot.get();
+							mouseStack = slot.stack.split(slot.stack.getCount() / 2);
+							slot.set(slot.stack);
+//							slot.set(ItemStack.EMPTY);
 						} else {
 							if (ItemStackUtils.areMergable(slot.get(), oldMouseStack)) {
 								slot.merge(oldMouseStack);
@@ -149,7 +155,7 @@ public class SimpleScreen extends Screen {
 					}
 					clickedID = slot.index;
 					if (oldMouseStack == null)
-						AssortedUtils.NETWORK_INSTANCE.sendToServer(new GrabItemPacket(clickedID));
+						AssortedUtils.NETWORK_INSTANCE.sendToServer(new GrabItemPacket(clickedID, mouseStack.getCount() / 2));
 					else AssortedUtils.NETWORK_INSTANCE.sendToServer(new MoveItemPacket(-1, clickedID));
 					return true;
 				}

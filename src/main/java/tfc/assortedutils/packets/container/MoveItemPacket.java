@@ -13,10 +13,17 @@ import java.util.function.Supplier;
 public class MoveItemPacket extends SimplePacket {
 	public int from;
 	public int to;
+	public int count = -1;
 	
 	public MoveItemPacket(int from, int to) {
 		this.from = from;
 		this.to = to;
+	}
+	
+	public MoveItemPacket(int from, int to, int count) {
+		this.from = from;
+		this.to = to;
+		this.count = count;
 	}
 	
 	public MoveItemPacket(PacketBuffer buf) {
