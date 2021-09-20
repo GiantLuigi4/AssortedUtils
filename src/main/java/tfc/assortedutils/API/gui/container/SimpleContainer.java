@@ -64,7 +64,8 @@ public class SimpleContainer extends Container {
 		super.onContainerClosed(playerEntity);
 		players.remove(playerEntity);
 		if (tempSlots.containsKey(playerEntity.getUniqueID())) {
-			playerEntity.dropItem(tempSlots.get(playerEntity.getUniqueID()).get(), true);
+			ItemStack item = tempSlots.get(playerEntity.getUniqueID()).get();
+			if (item != null) playerEntity.dropItem(item, true);
 			tempSlots.remove(playerEntity.getUniqueID());
 		}
 	}
@@ -88,7 +89,8 @@ public class SimpleContainer extends Container {
 		for (PlayerEntity playerEntity : playersToRemove) {
 			players.remove(playerEntity);
 			if (tempSlots.containsKey(playerEntity.getUniqueID())) {
-				playerEntity.dropItem(tempSlots.get(playerEntity.getUniqueID()).get(), true);
+				ItemStack item = tempSlots.get(playerEntity.getUniqueID()).get();
+				if (item != null) playerEntity.dropItem(item, true);
 				tempSlots.remove(playerEntity.getUniqueID());
 			}
 		}

@@ -34,23 +34,23 @@ public class SimpleContainerScreen<T extends Container> extends SimpleScreen {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		int guiLeft = this.width / 2 - sizeX;
 		int guiTop = this.height / 2 - sizeY;
-		
-		for (ClientItemSlot slot : this.slots) {
-			if (slot.click((int) mouseX, (int) mouseY, guiLeft, guiTop, this)) {
-				if (selectedSlot == -1) {
-					selectedSlot = slot.index;
-					selectedStack = slot.stack;
-					slot.set(ItemStack.EMPTY);
-				} else {
-					slots.get(selectedSlot).set(selectedStack);
-					if (selectedSlot != slot.index) slot.moveStack(selectedSlot);
-					selectedSlot = -1;
-					selectedStack = ItemStack.EMPTY;
-				}
-				
-				break;
-			}
-		}
+
+//		for (ClientItemSlot slot : this.slots) {
+//			if (slot.click((int) mouseX, (int) mouseY, guiLeft, guiTop, this)) {
+//				if (selectedSlot == -1) {
+//					selectedSlot = slot.index;
+//					selectedStack = slot.stack;
+//					slot.set(ItemStack.EMPTY);
+//				} else {
+//					slots.get(selectedSlot).set(selectedStack);
+//					if (selectedSlot != slot.index) slot.moveStack(selectedSlot);
+//					selectedSlot = -1;
+//					selectedStack = ItemStack.EMPTY;
+//				}
+//
+//				break;
+//			}
+//		}
 		
 		return super.mouseClicked(mouseX, mouseY, button);
 	}

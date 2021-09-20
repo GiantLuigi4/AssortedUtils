@@ -1,8 +1,6 @@
 package tfc.assortedutils;
 
 import com.tfc.better_fps_graph.API.Profiler;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -10,8 +8,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import tfc.assortedutils.API.gui.container.ItemSlot;
-import tfc.assortedutils.API.gui.container.SimpleContainer;
 import tfc.assortedutils.API.networking.AutomatedSimpleChannel;
 import tfc.assortedutils.custom_registries.debug_renderer.DebugRegistryBuilder;
 import tfc.assortedutils.custom_registries.simple_container_screens.SimpleContainerScreenRegistryBuilder;
@@ -36,22 +32,23 @@ public class AssortedUtils {
 		NETWORK_INSTANCE.registerPacket(PathPacket.class, PathPacket::new);
 		NETWORK_INSTANCE.registerPacket(StructurePacket.class, StructurePacket::new);
 		NETWORK_INSTANCE.registerPacket(ContainerPacket.class, ContainerPacket::new);
-		NETWORK_INSTANCE.registerPacket(MoveItemPacket.class, MoveItemPacket::new, (packet, context) -> {
-			if (context.get().getSender() != null) {
-				Container container = context.get().getSender().openContainer;
-				if (container instanceof SimpleContainer) {
-					ItemSlot slotSrc = ((SimpleContainer) container).slots.get(packet.from);
-					ItemSlot slotTar = ((SimpleContainer) container).slots.get(packet.to);
-					
-					ItemStack stack1 = slotSrc.get();
-					ItemStack stack2 = slotTar.get();
-					
-					slotSrc.set(stack2);
-					slotTar.set(stack1);
-				}
-				context.get().setPacketHandled(true);
-			}
-		});
+		NETWORK_INSTANCE.registerPacket(MoveItemPacket.class, MoveItemPacket::new);
+//		NETWORK_INSTANCE.registerPacket(MoveItemPacket.class, MoveItemPacket::new, (packet, context) -> {
+//			if (context.get().getSender() != null) {
+//				Container container = context.get().getSender().openContainer;
+//				if (container instanceof SimpleContainer) {
+//					ItemSlot slotSrc = ((SimpleContainer) container).slots.get(packet.from);
+//					ItemSlot slotTar = ((SimpleContainer) container).slots.get(packet.to);
+//
+//					ItemStack stack1 = slotSrc.get();
+//					ItemStack stack2 = slotTar.get();
+//
+//					slotSrc.set(stack2);
+//					slotTar.set(stack1);
+//				}
+//				context.get().setPacketHandled(true);
+//			}
+//		});
 		NETWORK_INSTANCE.registerPacket(SimpleContainerActionPacket.class, SimpleContainerActionPacket::new, (packet, context) -> {
 			if (packet.action == 0) {
 				context.get().getSender().closeContainer();
