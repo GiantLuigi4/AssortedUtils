@@ -33,13 +33,14 @@ public class GrabItemPacket extends SimplePacket {
 	@Override
 	public void handle(Supplier<NetworkEvent.Context> context) {
 		ServerPlayerEntity sender = context.get().getSender();
+		if (from < 0) return;
 		if (sender != null) {
 			if (sender.openContainer instanceof SimpleContainer) {
 				SimpleContainer container = (SimpleContainer) sender.openContainer;
 				
 				if (!container.tempSlots.containsKey(sender.getUniqueID())) return;
 				
-				ItemStack stack = container.getItem(from);
+				ItemStack stack = container.getItem(sender, from);
 				if (stack == null) return;
 				if (container.tempSlots.get(sender.getUniqueID()).inventory.isEmpty())
 					container.tempSlots.get(sender.getUniqueID()).set(stack);

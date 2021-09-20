@@ -46,14 +46,14 @@ public class MoveItemPacket extends SimplePacket {
 				
 				ItemStack src;
 				if (from == -1) src = container.tempSlots.get(sender.getUniqueID()).get();
-				else src = container.getItem(from);
+				else src = container.getItem(sender, from);
 				if (src == null) return;
 				
-				ItemStack dst = container.getItem(to);
-				container.setSlot(to, src);
+				ItemStack dst = container.getItem(sender, to);
+				container.setSlot(sender, to, src);
 				if (!(dst == null || dst.isEmpty())) {
 					if (from == -1) container.tempSlots.get(sender.getUniqueID()).set(dst);
-					else container.setSlot(from, dst);
+					else container.setSlot(sender, from, dst);
 				}
 			}
 		}

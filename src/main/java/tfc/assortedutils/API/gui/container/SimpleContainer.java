@@ -23,6 +23,8 @@ public class SimpleContainer extends Container {
 	public final HashMap<UUID, ItemSlot> tempSlots = new HashMap<>();
 	public ArrayList<ItemSlot> slots = new ArrayList<>();
 	
+	public int endPlayerInventory = 0;
+	
 	public SimpleContainer(@Nullable ContainerType<?> type, int id) {
 		super(type, id);
 	}
@@ -35,6 +37,13 @@ public class SimpleContainer extends Container {
 	}
 	
 	public ItemStack getItem(int index) {
+		if (index < endPlayerInventory)
+			throw new RuntimeException("Cannot get a slot from the player's inventory without a player for context");
+		return slots.get(index).get();
+	}
+	
+	public ItemStack getItem(PlayerEntity player, int index) {
+		if (index < endPlayerInventory) return player.inventory.getStackInSlot(index);
 		return slots.get(index).get();
 	}
 	
@@ -88,14 +97,15 @@ public class SimpleContainer extends Container {
 	public CompoundNBT serialize() {
 		CompoundNBT thisNBT = new CompoundNBT();
 		ListNBT inventoryNBT = new ListNBT();
-		slots.forEach((item) -> {
+		for (int i = endPlayerInventory + 1; i < slots.size(); i++) {
+			ItemSlot item = slots.get(i);
 			CompoundNBT slot = new CompoundNBT();
 			slot.putString("item", item.get().getItem().getRegistryName().toString());
 			if (item.get().hasTag()) slot.put("tag", item.get().getOrCreateTag());
 			slot.putInt("x", item.x);
 			slot.putInt("y", item.y);
 			inventoryNBT.add(slot);
-		});
+		}
 		thisNBT.putBoolean("interactable", isInteractable);
 		thisNBT.put("inventory", inventoryNBT);
 //		if (isInteractable) {
@@ -114,6 +124,16 @@ public class SimpleContainer extends Container {
 	}
 	
 	public void setSlot(int index, ItemStack value) {
+		if (index < endPlayerInventory)
+			throw new RuntimeException("Cannot set a slot from the player's inventory without a player for context");
+		slots.get(index).set(value);
+	}
+	
+	public void setSlot(PlayerEntity player, int index, ItemStack value) {
+		if (index < endPlayerInventory) {
+			player.inventory.removeStackFromSlot(index);
+			player.inventory.add(index, value);
+		}
 		slots.get(index).set(value);
 	}
 }
