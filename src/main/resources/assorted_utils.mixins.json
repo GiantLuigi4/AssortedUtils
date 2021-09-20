@@ -1,20 +1,20 @@
 {
   "required": false,
-  "package": "com.tfc.assortedutils.mixins",
+  "package": "tfc.assortedutils.mixins",
   "compatibilityLevel": "JAVA_8",
   "refmap": "assorted_utils.refmap.json",
   "client": [
-	"tfc.assortedutils.mixins.GameRendererMixin"
+	"GameRendererMixin"
   ],
   "mixins": [
-	"tfc.assortedutils.mixins.CUseEntityPacketMixin",
-	"tfc.assortedutils.mixins.DebugPacketSenderMixin",
-	"tfc.assortedutils.mixins.EnderDragonEntityMixin",
-	"tfc.assortedutils.mixins.EntityMixin",
-	"tfc.assortedutils.mixins.NetworkRegistryAccessor",
-	"tfc.assortedutils.mixins.PlayerEntityMixin",
-	"tfc.assortedutils.mixins.ServerNetPlayHandlerMixin",
-	"tfc.assortedutils.mixins.VoxelShapeAccessor"
+	"CUseEntityPacketMixin",
+	"DebugPacketSenderMixin",
+	"EnderDragonEntityMixin",
+	"EntityMixin",
+	"NetworkRegistryAccessor",
+	"PlayerEntityMixin",
+	"ServerNetPlayHandlerMixin",
+	"VoxelShapeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
