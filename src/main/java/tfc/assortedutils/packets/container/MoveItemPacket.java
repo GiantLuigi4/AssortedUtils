@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import tfc.assortedutils.API.gui.container.SimpleContainer;
+import tfc.assortedutils.API.misc.ItemStackUtils;
 import tfc.assortedutils.API.networking.SimplePacket;
 
 import java.util.function.Supplier;
@@ -49,12 +50,16 @@ public class MoveItemPacket extends SimplePacket {
 				else src = container.getItem(sender, from);
 				if (src == null) return;
 				
-				ItemStack dst = container.getItem(sender, to);
-				container.setSlot(sender, to, src);
-//				if (!(dst == null || dst.isEmpty())) {
-//					if (from == -1) container.tempSlots.get(sender.getUniqueID()).set(dst);
-//					else container.setSlot(sender, from, dst);
-//				}
+				ItemStack dst = container.getItem(sender, to).copy();
+				int prevCount = src.getCount();
+				container.mergeStack(sender, to, src);
+				if (prevCount == src.getCount()) {
+					if (!ItemStackUtils.areMergable(dst, src)) {
+						if (from == -1) container.tempSlots.get(sender.getUniqueID()).set(dst);
+						else container.slots.get(from).set(dst);
+						container.slots.get(to).set(src);
+					}
+				}
 			}
 		}
 	}

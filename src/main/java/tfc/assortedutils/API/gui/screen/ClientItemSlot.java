@@ -51,12 +51,12 @@ public class ClientItemSlot extends ItemSlot {
 					if (!stack.getTag().equals(this.stack.getTag())) return;
 				} else if (this.stack.getTag() != null) return;
 			} else if (stack.hasTag() != this.stack.hasTag()) return;
-			int amt = this.stack.getCount() - stack.getCount();
+			int amt = stack.getCount();
 			amt = Math.abs(amt);
-			int maxChange = (this.stack.getCount() - stack.getMaxStackSize());
+			int maxChange = (stack.getMaxStackSize() - this.stack.getCount());
 			if (amt > maxChange) amt = maxChange;
 			this.stack.grow(amt);
-			this.stack.shrink(amt);
+			stack.shrink(amt);
 		}
 	}
 	

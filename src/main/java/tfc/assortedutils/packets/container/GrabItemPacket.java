@@ -41,7 +41,7 @@ public class GrabItemPacket extends SimplePacket {
 				if (!container.tempSlots.containsKey(sender.getUniqueID())) return;
 				
 				ItemStack stack = container.getItem(sender, from);
-				container.setSlot(from, ItemStack.EMPTY);
+				container.setSlot(sender, from, ItemStack.EMPTY);
 				
 				if (stack == null) return;
 				

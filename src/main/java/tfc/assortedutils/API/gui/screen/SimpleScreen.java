@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
+import tfc.assortedutils.API.misc.ItemStackUtils;
 import tfc.assortedutils.AssortedUtils;
 import tfc.assortedutils.packets.container.GrabItemPacket;
 import tfc.assortedutils.packets.container.MoveItemPacket;
@@ -45,11 +46,10 @@ public class SimpleScreen extends Screen {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 		
 		matrixStack.push();
-		
-		Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(
-				mouseStack, mouseX, mouseY
-		);
-		
+		if (mouseStack != null) {
+			Minecraft.getInstance().getItemRenderer().renderItemIntoGUI(mouseStack, mouseX - 7, mouseY - 7);
+			Minecraft.getInstance().getItemRenderer().renderItemOverlayIntoGUI(Minecraft.getInstance().fontRenderer, mouseStack, mouseX - 7, mouseY - 7, null);
+		}
 		int guiLeft = this.width / 2 - sizeX;
 		int guiTop = this.height / 2 - sizeY;
 		for (ClientItemSlot slot : slots) slot.render(matrixStack, mouseX, mouseY, guiLeft, guiTop, this);
@@ -134,9 +134,17 @@ public class SimpleScreen extends Screen {
 					if (oldMouseStack == null) {
 						slot.set(ItemStack.EMPTY);
 					} else {
-						slot.merge(oldMouseStack);
-						if (!oldMouseStack.isEmpty()) {
-							mouseStack = oldMouseStack;
+						if (oldMouseStack.isEmpty()) {
+							mouseStack = slot.get();
+							slot.set(ItemStack.EMPTY);
+						} else {
+							if (ItemStackUtils.areMergable(slot.get(), oldMouseStack)) {
+								slot.merge(oldMouseStack);
+								mouseStack = oldMouseStack;
+							} else {
+								mouseStack = slot.get();
+								slot.set(oldMouseStack);
+							}
 						}
 					}
 					clickedID = slot.index;

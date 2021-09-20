@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.fml.network.PacketDistributor;
+import tfc.assortedutils.API.misc.ItemStackUtils;
 import tfc.assortedutils.AssortedUtils;
 import tfc.assortedutils.packets.container.ContainerPacket;
 import tfc.assortedutils.packets.container.UpdateContainerPacket;
@@ -125,6 +126,31 @@ public class SimpleContainer extends Container {
 		return true;
 	}
 	
+	public void mergeStack(int index, ItemStack value) {
+		if (index < endPlayerInventory)
+			throw new RuntimeException("Cannot set a slot from the player's inventory without a player for context");
+		else slots.get(index).set(value);
+	}
+	
+	public void mergeStack(PlayerEntity player, int index, ItemStack value) {
+		if (index < endPlayerInventory) {
+//			player.inventory.removeStackFromSlot(index);
+			if (value.isEmpty()) {
+				player.inventory.setInventorySlotContents(index, value);
+				return;
+			}
+			if (ItemStackUtils.areMergable(player.inventory.getStackInSlot(index), value)) {
+				ItemStackUtils.merge(player.inventory.getStackInSlot(index), value);
+				player.inventory.setInventorySlotContents(index, value);
+			} else if (player.inventory.getStackInSlot(index).isEmpty()) {
+				player.inventory.setInventorySlotContents(index, value.copy());
+				value.shrink(value.getCount());
+			} else {
+//				player.inventory.setInventorySlotContents(index, value.copy());
+			}
+		} else mergeStack(index, value);
+	}
+	
 	public void setSlot(int index, ItemStack value) {
 		if (index < endPlayerInventory)
 			throw new RuntimeException("Cannot set a slot from the player's inventory without a player for context");
@@ -133,8 +159,7 @@ public class SimpleContainer extends Container {
 	
 	public void setSlot(PlayerEntity player, int index, ItemStack value) {
 		if (index < endPlayerInventory) {
-//			player.inventory.removeStackFromSlot(index);
-			player.inventory.add(index, value);
+			player.inventory.setInventorySlotContents(index, value);
 		} else slots.get(index).set(value);
 	}
 }
