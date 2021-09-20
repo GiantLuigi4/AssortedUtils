@@ -51,10 +51,10 @@ public class MoveItemPacket extends SimplePacket {
 				
 				ItemStack dst = container.getItem(sender, to);
 				container.setSlot(sender, to, src);
-				if (!(dst == null || dst.isEmpty())) {
-					if (from == -1) container.tempSlots.get(sender.getUniqueID()).set(dst);
-					else container.setSlot(sender, from, dst);
-				}
+//				if (!(dst == null || dst.isEmpty())) {
+//					if (from == -1) container.tempSlots.get(sender.getUniqueID()).set(dst);
+//					else container.setSlot(sender, from, dst);
+//				}
 			}
 		}
 	}

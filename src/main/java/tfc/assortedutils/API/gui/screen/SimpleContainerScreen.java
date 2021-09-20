@@ -4,14 +4,13 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
 public class SimpleContainerScreen<T extends Container> extends SimpleScreen {
 	public final ContainerType<T> type;
-	
-	public int selectedSlot = -1;
-	public ItemStack selectedStack;
+
+//	public int selectedSlot = -1;
+//	public ItemStack selectedStack;
 	
 	public SimpleContainerScreen(ITextComponent titleIn, Minecraft minecraft, ContainerType<T> type) {
 		super(titleIn, minecraft);
@@ -25,7 +24,7 @@ public class SimpleContainerScreen<T extends Container> extends SimpleScreen {
 	
 	@Override
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		for (ClientItemSlot slot : this.slots) if (slot.index == selectedSlot) slot.set(ItemStack.EMPTY);
+//		for (ClientItemSlot slot : this.slots) if (slot.index == selectedSlot) slot.set(ItemStack.EMPTY);
 		
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 	}

@@ -99,7 +99,7 @@ public class SimpleContainer extends Container {
 	public CompoundNBT serialize() {
 		CompoundNBT thisNBT = new CompoundNBT();
 		ListNBT inventoryNBT = new ListNBT();
-		for (int i = endPlayerInventory + 1; i < slots.size(); i++) {
+		for (int i = endPlayerInventory; i < slots.size(); i++) {
 			ItemSlot item = slots.get(i);
 			CompoundNBT slot = new CompoundNBT();
 			slot.putString("item", item.get().getItem().getRegistryName().toString());
@@ -128,14 +128,13 @@ public class SimpleContainer extends Container {
 	public void setSlot(int index, ItemStack value) {
 		if (index < endPlayerInventory)
 			throw new RuntimeException("Cannot set a slot from the player's inventory without a player for context");
-		slots.get(index).set(value);
+		else slots.get(index).set(value);
 	}
 	
 	public void setSlot(PlayerEntity player, int index, ItemStack value) {
 		if (index < endPlayerInventory) {
-			player.inventory.removeStackFromSlot(index);
+//			player.inventory.removeStackFromSlot(index);
 			player.inventory.add(index, value);
-		}
-		slots.get(index).set(value);
+		} else slots.get(index).set(value);
 	}
 }
