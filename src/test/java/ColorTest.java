@@ -1,4 +1,4 @@
-import com.tfc.assortedutils.utils.Color;
+import tfc.assortedutils.utils.Color;
 
 import java.util.Arrays;
 
