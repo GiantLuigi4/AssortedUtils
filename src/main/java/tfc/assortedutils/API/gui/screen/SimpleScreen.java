@@ -132,7 +132,9 @@ public class SimpleScreen extends Screen {
 				if (slot.click((int) mouseX, (int) mouseY, guiLeft, guiTop, this)) {
 					ItemStack oldMouseStack = mouseStack;
 					if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-						mouseStack = slot.stack.split(slot.stack.getCount() / 2);
+						if (slot.stack != null) {
+							mouseStack = slot.stack.split(slot.stack.getCount() / 2);
+						}
 					}
 					if (oldMouseStack == null) {
 //						slot.set(ItemStack.EMPTY);
@@ -140,7 +142,12 @@ public class SimpleScreen extends Screen {
 					} else {
 						if (oldMouseStack.isEmpty()) {
 //							mouseStack = slot.get();
-							mouseStack = slot.stack.split(slot.stack.getCount() / 2);
+							mouseStack = slot.stack;
+							if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+								if (slot.stack != null) {
+									mouseStack = slot.stack.split(slot.stack.getCount() / 2);
+								}
+							}
 							slot.set(slot.stack);
 //							slot.set(ItemStack.EMPTY);
 						} else {
@@ -154,9 +161,10 @@ public class SimpleScreen extends Screen {
 						}
 					}
 					clickedID = slot.index;
-					if (oldMouseStack == null)
-						AssortedUtils.NETWORK_INSTANCE.sendToServer(new GrabItemPacket(clickedID, mouseStack.getCount() / 2));
-					else AssortedUtils.NETWORK_INSTANCE.sendToServer(new MoveItemPacket(-1, clickedID));
+					if (oldMouseStack == null) {
+						if (mouseStack != null)
+							AssortedUtils.NETWORK_INSTANCE.sendToServer(new GrabItemPacket(clickedID, mouseStack.getCount()));
+					} else AssortedUtils.NETWORK_INSTANCE.sendToServer(new MoveItemPacket(-1, clickedID));
 					return true;
 				}
 			}
