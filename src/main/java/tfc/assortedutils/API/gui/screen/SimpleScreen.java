@@ -144,8 +144,10 @@ public class SimpleScreen extends Screen {
 							if (slot.stack != null) {
 								mouseStack = mouseStack.split(slot.stack.getCount() / 2);
 							}
+							slot.set(slot.stack);
+						} else {
+							slot.set(ItemStack.EMPTY);
 						}
-						slot.set(slot.stack);
 					} else {
 						if (oldMouseStack.isEmpty()) {
 //							mouseStack = slot.get();
@@ -154,8 +156,10 @@ public class SimpleScreen extends Screen {
 								if (slot.stack != null) {
 									mouseStack = mouseStack.split(slot.stack.getCount() / 2);
 								}
+								slot.set(slot.stack);
+							} else {
+								slot.set(ItemStack.EMPTY);
 							}
-							slot.set(slot.stack);
 //							slot.set(ItemStack.EMPTY);
 						} else {
 							if (ItemStackUtils.areMergable(slot.get(), oldMouseStack)) {
