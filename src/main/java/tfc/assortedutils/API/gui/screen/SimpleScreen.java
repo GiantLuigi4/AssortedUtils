@@ -131,13 +131,20 @@ public class SimpleScreen extends Screen {
 				// TODO: sneak transfer
 				if (slot.click((int) mouseX, (int) mouseY, guiLeft, guiTop, this)) {
 					ItemStack oldMouseStack = mouseStack;
+					mouseStack = slot.stack;
 					if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-						if (slot.stack != null) {
-							mouseStack = slot.stack.split(slot.stack.getCount() / 2);
+						if (mouseStack != null) {
+							mouseStack = mouseStack.split(slot.stack.getCount() / 2);
 						}
 					}
 					if (oldMouseStack == null) {
 //						slot.set(ItemStack.EMPTY);
+						mouseStack = slot.stack;
+						if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+							if (slot.stack != null) {
+								mouseStack = mouseStack.split(slot.stack.getCount() / 2);
+							}
+						}
 						slot.set(slot.stack);
 					} else {
 						if (oldMouseStack.isEmpty()) {
@@ -145,7 +152,7 @@ public class SimpleScreen extends Screen {
 							mouseStack = slot.stack;
 							if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
 								if (slot.stack != null) {
-									mouseStack = slot.stack.split(slot.stack.getCount() / 2);
+									mouseStack = mouseStack.split(slot.stack.getCount() / 2);
 								}
 							}
 							slot.set(slot.stack);
